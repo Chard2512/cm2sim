@@ -4,6 +4,15 @@
 #include "vector2.hpp"
 #include <vector>
 
+enum class BlockID {
+    NOR = 0,
+    AND = 1,
+    OR = 2,
+    XOR = 3,
+    NAND = 10,
+    XNOR = 11,
+};
+
 class Block {
 protected:
     int id;
