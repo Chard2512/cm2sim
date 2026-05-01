@@ -1,5 +1,7 @@
 #include "module.hpp"
 
+Module::Module() {}
+
 std::vector<Block*> Module::getBlocks() const {
     std::vector<Block*> temp;
     for (Block block : blocks) {
@@ -14,10 +16,10 @@ Block* Module::getBlock(int index) const {
 
 void Module::update() {
     std::vector<bool> nextState = {};
-    for (int i; i < blocks.size(); i++) {
+    for (size_t i = 0; i < blocks.size(); i++) {
         nextState.push_back(blocks[i].updateFunction());
     }
-    for (int i; i < blocks.size(); i++) {
+    for (size_t i = 0; i < blocks.size(); i++) {
         blocks[i].setState(nextState[i]);
     }
 }
