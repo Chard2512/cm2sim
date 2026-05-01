@@ -1,27 +1,31 @@
 # Minimum required CMake version
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.15)
 
 # Project name and language
-project(CM2SIM VERSION 0.1.0 LANGUAGES CXX)
+project(cm2sim VERSION 0.1.0 LANGUAGES CXX)
 
-# Set C++ standard
+# ============================================================================
+# Compiler Configuration
+# ============================================================================
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Build options
+# Export compile commands for tools like clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Output directories
+# ============================================================================
+# Output Directories
+# ============================================================================
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-# Find packages (example)
-# find_package(OpenMP REQUIRED)
-
-# Source files
+# ============================================================================
+# Source Files
+# ============================================================================
 set(SOURCES
+    src/cm2sim.cpp
     src/parser.cpp
     src/vector2.cpp
     src/module.cpp
@@ -32,24 +36,42 @@ set(HEADERS
     include/block.hpp
     include/module.hpp
     include/vector2.hpp
+    include/parser.hpp
 )
 
-# Include directories
-include_directories(${CMAKE_SOURCE_DIR}/include)
+# ============================================================================
+# Main Executable
+# ============================================================================
+add_executable(${PROJECT_NAME} ${SOURCES})
 
-# Create executable
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+# Set include directories for the target
+target_include_directories(${PROJECT_NAME}
+    PRIVATE ${CMAKE_SOURCE_DIR}/include
+)
 
-# Link libraries (example)
+# Set compiler warnings
+if(MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4)
+else()
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wvla)
+endif()
+
+# ============================================================================
+# Find Packages (example)
+# ============================================================================
+# find_package(OpenMP REQUIRED)
 # target_link_libraries(${PROJECT_NAME} PRIVATE OpenMP::OpenMP_CXX)
 
-# Set properties
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    CXX_STANDARD ${CMAKE_CXX_STANDARD}
-    CXX_STANDARD_REQUIRED ON
-)
+# ============================================================================
+# Testing
+# ============================================================================
+#enable_testing()
+# Add test directory once tests are created
+# add_subdirectory(tests)
 
-# Install rules
+# ============================================================================
+# Install Rules
+# ============================================================================
 install(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION bin
 )
