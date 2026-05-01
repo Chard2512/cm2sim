@@ -8,8 +8,15 @@ private:
     std::vector<Block> blocks;
 
 public:
+    Module();
+
     std::vector<Block*> getBlocks() const;
-    void addBlock(Block block);
+    Block* getBlock(int index) const;
+    void addBlock(Block block) { blocks.push_back(block); };
+    void connectBlocks(Block* block0, Block* block1) { 
+        block0->addOutput(block1);
+        block1->addInput(block0);
+    };
     void update();
 };
 
