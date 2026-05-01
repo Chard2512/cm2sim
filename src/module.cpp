@@ -8,6 +8,10 @@ std::vector<Block*> Module::getBlocks() const {
     return temp; 
 }
 
+void Module::addBlock(Block block) {
+    blocks.push_back(block);
+}
+
 void Module::update() {
     std::vector<bool> nextState = {};
     for (int i; i < blocks.size(); i++) {

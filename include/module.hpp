@@ -9,6 +9,7 @@ private:
 
 public:
     std::vector<Block*> getBlocks() const;
+    void addBlock(Block block);
     void update();
 };
 
