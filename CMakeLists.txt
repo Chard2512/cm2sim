@@ -22,6 +22,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 # Source files
 set(SOURCES
+    src/parser.cpp
     src/vector2.cpp
     src/module.cpp
     src/block.cpp

@@ -4,6 +4,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/CM2SIM.dir/src/block.cpp.o.d"
   "CMakeFiles/CM2SIM.dir/src/module.cpp.o"
   "CMakeFiles/CM2SIM.dir/src/module.cpp.o.d"
+  "CMakeFiles/CM2SIM.dir/src/parser.cpp.o"
+  "CMakeFiles/CM2SIM.dir/src/parser.cpp.o.d"
   "CMakeFiles/CM2SIM.dir/src/vector2.cpp.o"
   "CMakeFiles/CM2SIM.dir/src/vector2.cpp.o.d"
   "bin/CM2SIM"

@@ -1,6 +1,12 @@
 [
 {
   "directory": "/home/chard/Repos/cm2sim",
+  "command": "/usr/bin/c++  -I/home/chard/Repos/cm2sim/include -std=c++17 -o CMakeFiles/CM2SIM.dir/src/parser.cpp.o -c /home/chard/Repos/cm2sim/src/parser.cpp",
+  "file": "/home/chard/Repos/cm2sim/src/parser.cpp",
+  "output": "CMakeFiles/CM2SIM.dir/src/parser.cpp.o"
+},
+{
+  "directory": "/home/chard/Repos/cm2sim",
   "command": "/usr/bin/c++  -I/home/chard/Repos/cm2sim/include -std=c++17 -o CMakeFiles/CM2SIM.dir/src/vector2.cpp.o -c /home/chard/Repos/cm2sim/src/vector2.cpp",
   "file": "/home/chard/Repos/cm2sim/src/vector2.cpp",
   "output": "CMakeFiles/CM2SIM.dir/src/vector2.cpp.o"

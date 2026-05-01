@@ -72,10 +72,24 @@ include CMakeFiles/CM2SIM.dir/flags.make
 CMakeFiles/CM2SIM.dir/codegen:
 .PHONY : CMakeFiles/CM2SIM.dir/codegen
 
+CMakeFiles/CM2SIM.dir/src/parser.cpp.o: CMakeFiles/CM2SIM.dir/flags.make
+CMakeFiles/CM2SIM.dir/src/parser.cpp.o: src/parser.cpp
+CMakeFiles/CM2SIM.dir/src/parser.cpp.o: CMakeFiles/CM2SIM.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chard/Repos/cm2sim/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/CM2SIM.dir/src/parser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CM2SIM.dir/src/parser.cpp.o -MF CMakeFiles/CM2SIM.dir/src/parser.cpp.o.d -o CMakeFiles/CM2SIM.dir/src/parser.cpp.o -c /home/chard/Repos/cm2sim/src/parser.cpp
+
+CMakeFiles/CM2SIM.dir/src/parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CM2SIM.dir/src/parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/chard/Repos/cm2sim/src/parser.cpp > CMakeFiles/CM2SIM.dir/src/parser.cpp.i
+
+CMakeFiles/CM2SIM.dir/src/parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CM2SIM.dir/src/parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/chard/Repos/cm2sim/src/parser.cpp -o CMakeFiles/CM2SIM.dir/src/parser.cpp.s
+
 CMakeFiles/CM2SIM.dir/src/vector2.cpp.o: CMakeFiles/CM2SIM.dir/flags.make
 CMakeFiles/CM2SIM.dir/src/vector2.cpp.o: src/vector2.cpp
 CMakeFiles/CM2SIM.dir/src/vector2.cpp.o: CMakeFiles/CM2SIM.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chard/Repos/cm2sim/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/CM2SIM.dir/src/vector2.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chard/Repos/cm2sim/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CM2SIM.dir/src/vector2.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CM2SIM.dir/src/vector2.cpp.o -MF CMakeFiles/CM2SIM.dir/src/vector2.cpp.o.d -o CMakeFiles/CM2SIM.dir/src/vector2.cpp.o -c /home/chard/Repos/cm2sim/src/vector2.cpp
 
 CMakeFiles/CM2SIM.dir/src/vector2.cpp.i: cmake_force
@@ -89,7 +103,7 @@ CMakeFiles/CM2SIM.dir/src/vector2.cpp.s: cmake_force
 CMakeFiles/CM2SIM.dir/src/module.cpp.o: CMakeFiles/CM2SIM.dir/flags.make
 CMakeFiles/CM2SIM.dir/src/module.cpp.o: src/module.cpp
 CMakeFiles/CM2SIM.dir/src/module.cpp.o: CMakeFiles/CM2SIM.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chard/Repos/cm2sim/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CM2SIM.dir/src/module.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chard/Repos/cm2sim/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/CM2SIM.dir/src/module.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CM2SIM.dir/src/module.cpp.o -MF CMakeFiles/CM2SIM.dir/src/module.cpp.o.d -o CMakeFiles/CM2SIM.dir/src/module.cpp.o -c /home/chard/Repos/cm2sim/src/module.cpp
 
 CMakeFiles/CM2SIM.dir/src/module.cpp.i: cmake_force
@@ -103,7 +117,7 @@ CMakeFiles/CM2SIM.dir/src/module.cpp.s: cmake_force
 CMakeFiles/CM2SIM.dir/src/block.cpp.o: CMakeFiles/CM2SIM.dir/flags.make
 CMakeFiles/CM2SIM.dir/src/block.cpp.o: src/block.cpp
 CMakeFiles/CM2SIM.dir/src/block.cpp.o: CMakeFiles/CM2SIM.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chard/Repos/cm2sim/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/CM2SIM.dir/src/block.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/chard/Repos/cm2sim/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/CM2SIM.dir/src/block.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CM2SIM.dir/src/block.cpp.o -MF CMakeFiles/CM2SIM.dir/src/block.cpp.o.d -o CMakeFiles/CM2SIM.dir/src/block.cpp.o -c /home/chard/Repos/cm2sim/src/block.cpp
 
 CMakeFiles/CM2SIM.dir/src/block.cpp.i: cmake_force
@@ -116,6 +130,7 @@ CMakeFiles/CM2SIM.dir/src/block.cpp.s: cmake_force
 
 # Object files for target CM2SIM
 CM2SIM_OBJECTS = \
+"CMakeFiles/CM2SIM.dir/src/parser.cpp.o" \
 "CMakeFiles/CM2SIM.dir/src/vector2.cpp.o" \
 "CMakeFiles/CM2SIM.dir/src/module.cpp.o" \
 "CMakeFiles/CM2SIM.dir/src/block.cpp.o"
@@ -123,13 +138,14 @@ CM2SIM_OBJECTS = \
 # External object files for target CM2SIM
 CM2SIM_EXTERNAL_OBJECTS =
 
+bin/CM2SIM: CMakeFiles/CM2SIM.dir/src/parser.cpp.o
 bin/CM2SIM: CMakeFiles/CM2SIM.dir/src/vector2.cpp.o
 bin/CM2SIM: CMakeFiles/CM2SIM.dir/src/module.cpp.o
 bin/CM2SIM: CMakeFiles/CM2SIM.dir/src/block.cpp.o
 bin/CM2SIM: CMakeFiles/CM2SIM.dir/build.make
 bin/CM2SIM: CMakeFiles/CM2SIM.dir/compiler_depend.ts
 bin/CM2SIM: CMakeFiles/CM2SIM.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/chard/Repos/cm2sim/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable bin/CM2SIM"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/chard/Repos/cm2sim/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable bin/CM2SIM"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CM2SIM.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
