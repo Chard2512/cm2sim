@@ -3,6 +3,7 @@
 
 #include "vector2.hpp"
 #include <vector>
+#include <string>
 
 enum class BlockID {
     NOR = 0,
@@ -13,21 +14,68 @@ enum class BlockID {
     XNOR = 11,
 };
 
+class BlockFactory {
+public:
+    static Block* createBlock(
+        BlockID id, 
+        bool state, 
+        Vector2 pos
+    ) {
+        Block* newBlock = nullptr;
+        
+        switch (id) {
+            case BlockID::NOR:
+                newBlock = new NOR();
+                break;
+            case BlockID::AND:
+                newBlock = new AND();
+                break;
+            case BlockID::OR:
+                newBlock = new OR();
+                break;
+            case BlockID::XOR:
+                newBlock = new XOR();
+                break;
+            case BlockID::NAND:
+                newBlock = new NAND();
+                break;
+            case BlockID::XNOR:
+                newBlock = new XNOR();
+                break;
+            default:
+                return nullptr;
+        }
+        
+        newBlock->setPos(pos);
+        newBlock->setState(state);
+        return newBlock;
+    }
+};
+
 class Block {
 protected:
-    int id;
+    BlockID id;
     Vector2 pos = Vector2(0, 0);
     bool state = false;
     std::vector<Block*> inputs = {};
     std::vector<Block*> outputs = {};
     
 public:
-    int getId() const { return id; }
+    Block();
+
+    BlockID getId() const { return id; }
     Vector2 getPos() const { return pos; }
+    void setPos(Vector2 newPos) { pos = newPos; }
     bool getState() const { return state; }
     void setState(bool newState) { state = newState; }
     std::vector<Block*> getInputs() const { return inputs; }
+    void addInput(Block* input) {
+        inputs.push_back(input);
+    }
     std::vector<Block*> getOutputs() const { return outputs; }
+    void addOutput(Block* output) {
+        outputs.push_back(output);
+    }
     virtual bool updateFunction() const;
 };
 
