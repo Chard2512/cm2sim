@@ -22,12 +22,15 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 # Source files
 set(SOURCES
-    src/main.cpp
-    src/example.cpp
+    src/vector2.cpp
+    src/module.cpp
+    src/block.cpp
 )
 
 set(HEADERS
-    include/example.h
+    include/block.hpp
+    include/module.hpp
+    include/vector2.hpp
 )
 
 # Include directories
