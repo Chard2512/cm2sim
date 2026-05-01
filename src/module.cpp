@@ -3,13 +3,13 @@
 std::vector<Block*> Module::getBlocks() const {
     std::vector<Block*> temp;
     for (Block block : blocks) {
-        temp.push_back(&block);
+        temp.push_back(const_cast<Block*>(&block));
     }
     return temp; 
 }
 
-void Module::addBlock(Block block) {
-    blocks.push_back(block);
+Block* Module::getBlock(int index) const {
+    return const_cast<Block*>(&blocks[index]);
 }
 
 void Module::update() {
