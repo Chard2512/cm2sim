@@ -1,1 +1,0 @@
-/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/CM2SIM.dir/link.d CMakeFiles/CM2SIM.dir/src/parser.cpp.o CMakeFiles/CM2SIM.dir/src/vector2.cpp.o CMakeFiles/CM2SIM.dir/src/module.cpp.o CMakeFiles/CM2SIM.dir/src/block.cpp.o -o bin/CM2SIM
