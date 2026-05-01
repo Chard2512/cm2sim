@@ -5,7 +5,7 @@
 
 class Module {
 private:
-    std::vector<Block> blocks;
+    std::vector<Block> blocks = {};
 
 public:
     Module();
