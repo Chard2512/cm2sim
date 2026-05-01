@@ -27,6 +27,15 @@ bool OR::updateFunction() const {
     return false;
 }
 
+bool NAND::updateFunction() const {
+    for (Block* input : inputs) {
+        if (input->getState() == false) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool XOR::updateFunction() const {
     bool tmp = false;
     for (Block* input : inputs) {
