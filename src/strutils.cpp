@@ -18,7 +18,7 @@ std::vector<std::string> split(std::string text, const char sep) {
 }
 
 std::string substrFromChar(std::string text, const char sep) {
-    return text.substr(text.find('=') + 1);
+    return text.substr(text.find(sep) + 1);
 }
 
 bool startsWith(std::string text, const std::string match) {
