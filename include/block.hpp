@@ -1,9 +1,10 @@
 #ifndef cm2_block_hpp
 #define cm2_block_hpp
 
-#include "vector2.hpp"
 #include <vector>
 #include <string>
+#include <iostream>
+#include "vector2.hpp"
 
 enum class BlockID {
     NOR = 0,
@@ -40,42 +41,56 @@ public:
     virtual bool updateFunction() const {
         return false;
     }
+    virtual BlockID getID() const = 0;
+    virtual std::string getIDName() const = 0;
 };
 
 class NOR : public Block {
 
 public:
     bool updateFunction() const;
+    BlockID getID() const override { return BlockID::NOR; }
+    std::string getIDName() const override { return "NOR"; }
 };
 
 class AND : public Block {
 
 public:
     bool updateFunction() const;
+    BlockID getID() const override { return BlockID::AND; }
+    std::string getIDName() const override { return "AND"; }
 };
 
 class OR : public Block {
 
 public:
     bool updateFunction() const;
+    BlockID getID() const override { return BlockID::OR; }
+    std::string getIDName() const override { return "OR"; }
 };
 
 class XOR : public Block {
 
 public:
     bool updateFunction() const;
+    BlockID getID() const override { return BlockID::XOR; }
+    std::string getIDName() const override { return "XOR"; }
 };
 
 class NAND : public Block {
 
 public:
     bool updateFunction() const;
+    BlockID getID() const override { return BlockID::NAND; }
+    std::string getIDName() const override { return "NAND"; }
 };
 
 class XNOR : public Block {
 
 public:
     bool updateFunction() const;
+    BlockID getID() const override { return BlockID::XNOR; }
+    std::string getIDName() const override { return "XNOR"; }
 };
 
 class BlockFactory {
@@ -107,6 +122,7 @@ public:
                 newBlock = new XNOR();
                 break;
             default:
+                std::cerr << "Not recognized/supported block id '" << static_cast<int>(id) << "'." << std::endl;
                 return nullptr;
         }
         
