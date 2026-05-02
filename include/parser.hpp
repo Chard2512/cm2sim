@@ -3,8 +3,7 @@
 
 #include "module.hpp"
 
-bool loadModule(Module module, std::string filepath);
-std::vector<std::string> split(std::string text, const char sep);
+bool loadModule(Module& module, std::string filepath);
 Block parseBlockstring(std::string blockstring);
 
 #endif

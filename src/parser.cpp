@@ -2,14 +2,13 @@
 #include <fstream>
 #include <string>
 #include "parser.hpp"
+#include "strutils.hpp"
 
-Module loadModule(std::string filepath) {
-    Module module = Module();
-    
+bool loadModule(Module& module, std::string filepath) {
     std::ifstream file(filepath);
     if (!file.is_open()) {
         std::cerr << "ERROR: Could not open file \"" << filepath << "\"." << std::endl; 
-        return module;
+        return false;
     }
 
     std::string savestring;
@@ -32,24 +31,7 @@ Module loadModule(std::string filepath) {
         module.connectBlocks(block0, block1);
     }
 
-    return module;
-}
-
-std::vector<std::string> split(std::string text, const char sep) {
-    std::vector<std::string> result;
-    std::string current;
-    for (char c : text) {
-        if (c == sep) {
-            result.push_back(current);
-            current.clear();
-        } else {
-            current += c;
-        }
-    }
-
-    result.push_back(current);
-
-    return result;
+    return true;
 }
 
 Block parseBlockstring(std::string blockstring) {
