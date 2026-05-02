@@ -28,8 +28,8 @@ public:
     Block() = default;
     virtual ~Block() = default;
 
-    Vector2f getPos() const { return pos; }
-    void setPos(Vector2f newPos) { pos = newPos; }
+    Vector2f getPosition() const { return pos; }
+    void setPosition(Vector2f newPos) { pos = newPos; }
     bool getState() const { return state; }
     void setState(bool newState) { state = newState; }
     std::vector<Block*> getInputs() const { return inputs; }
@@ -128,7 +128,7 @@ public:
                 return nullptr;
         }
         
-        newBlock->setPos(pos);
+        newBlock->setPosition(pos);
         newBlock->setState(state);
         return newBlock;
     }
