@@ -4,7 +4,9 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include "vector2.hpp"
+#include <SFML/Graphics.hpp>
+
+using namespace sf;
 
 enum class BlockID {
     NOR = 0,
@@ -17,7 +19,7 @@ enum class BlockID {
 
 class Block {
 protected:
-    Vector2 pos = Vector2(0, 0);
+    Vector2f pos = Vector2f(0, 0);
     bool state = false;
     std::vector<Block*> inputs = {};
     std::vector<Block*> outputs = {};
@@ -26,8 +28,8 @@ public:
     Block() = default;
     virtual ~Block() = default;
 
-    Vector2 getPos() const { return pos; }
-    void setPos(Vector2 newPos) { pos = newPos; }
+    Vector2f getPos() const { return pos; }
+    void setPos(Vector2f newPos) { pos = newPos; }
     bool getState() const { return state; }
     void setState(bool newState) { state = newState; }
     std::vector<Block*> getInputs() const { return inputs; }
@@ -98,7 +100,7 @@ public:
     static Block* createBlock(
         BlockID id, 
         bool state, 
-        Vector2 pos
+        Vector2f pos
     ) {
         Block* newBlock = nullptr;
         
