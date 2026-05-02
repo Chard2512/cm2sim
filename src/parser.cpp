@@ -7,7 +7,7 @@
 bool loadModule(Module& module, std::string filepath) {
     std::ifstream file(filepath);
     if (!file.is_open()) {
-        std::cerr << "ERROR: Could not open file \"" << filepath << "\"." << std::endl; 
+        std::cerr << "Could not open file \"" << filepath << "\"." << std::endl; 
         return false;
     }
 
