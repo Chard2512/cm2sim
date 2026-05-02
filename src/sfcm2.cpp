@@ -13,7 +13,7 @@ std::string progName;
 
 void usage() {
     std::cout << "Usage: " << progName << " [OPTION]... [FILE]\n";
-    std::cout << "Run a simulation of a Circuit Maker 2 module in a 2D graphical environment.\n\n";
+    std::cout << "Run a simulation of a Circuit Maker 2 module.\n\n";
     std::cout << "Example: " << progName << " -cd savestring.txt \n\n";
     std::cout << "Arguments:\n";
     std::cout << std::left
