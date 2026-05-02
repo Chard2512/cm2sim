@@ -30,7 +30,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # Source Files
 # ============================================================================
 set(SOURCES
-    src/cm2sim.cpp
+    src/sfcm2.cpp
     src/parser.cpp
     src/strutils.cpp
     src/module.cpp
