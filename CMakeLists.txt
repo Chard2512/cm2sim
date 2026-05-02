@@ -36,6 +36,7 @@ set(SOURCES
     src/vector2.cpp
     src/module.cpp
     src/block.cpp
+    src/cliview.cpp
 )
 
 set(HEADERS
@@ -44,6 +45,7 @@ set(HEADERS
     include/vector2.hpp
     include/parser.hpp
     include/strutils.hpp
+    include/cliview.hpp
 )
 
 # ============================================================================
