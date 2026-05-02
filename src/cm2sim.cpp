@@ -1,6 +1,5 @@
 #include <iostream>
 #include <iomanip>
-#include <chrono>
 #include <thread>
 #include "strutils.hpp"
 #include "parser.hpp"
@@ -37,21 +36,18 @@ void usage() {
 }
 
 void runSimulation(Module module, bool cliMode, bool fast, bool verbosity, bool debug) {
-    using namespace std::chrono;
-
-    const auto renderInterval = milliseconds(static_cast<int64_t>(1000 / FPS));
+    const auto renderInterval = milliseconds(static_cast<int32_t>(1000 / FPS));
     auto simulationStepTime = microseconds(static_cast<int64_t>(1'000'000 / simulationTickrate));
-    auto startTime = high_resolution_clock::now();
-    auto nextSimulationTime = high_resolution_clock::now() + simulationStepTime;
-    auto lastRenderTime = high_resolution_clock::now();
-    u_int64_t simulationStepCount = 0;
+    auto clock = sf::Clock();
+    auto nextSimulationTime = simulationStepTime;
+    auto lastRenderTime = milliseconds(0);
+    uint64_t simulationStepCount = 0;
     bool running = true;
 
     while (running) {
-        auto currentTime = high_resolution_clock::now();
-        auto elapsed = currentTime - startTime;
+        auto elapsed = clock.getElapsedTime();
 
-        while (fast || currentTime >= nextSimulationTime) {
+        while (fast || elapsed >= nextSimulationTime) {
             if (!fast) {
                 nextSimulationTime += simulationStepTime;
             }
@@ -64,8 +60,8 @@ void runSimulation(Module module, bool cliMode, bool fast, bool verbosity, bool 
             }
         }
 
-        if (cliMode && (currentTime - lastRenderTime) >= renderInterval) {
-            lastRenderTime = currentTime;
+        if (cliMode && (elapsed - lastRenderTime) >= renderInterval) {
+            lastRenderTime = elapsed;
 
             std::cout << "\033[2J\033[1;1H";
             std::cout << std::string(60, '=') << "\n";
@@ -74,7 +70,7 @@ void runSimulation(Module module, bool cliMode, bool fast, bool verbosity, bool 
                           << std::to_string(
                              1'000'000
                              * simulationStepCount 
-                             / static_cast<double>(duration_cast<microseconds>(elapsed).count())) 
+                             / elapsed.asMicroseconds())
                              << "\n";
             }
             std::cout << "Step: " << std::to_string(simulationStepCount) << "\n\n";
