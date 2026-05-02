@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.28)
 
 # Project name and language
-project(cm2sim VERSION 0.1.0 LANGUAGES CXX)
+project(SFCM2 VERSION 0.1.0 LANGUAGES CXX)
 
 # ============================================================================
 # Compiler Configuration
