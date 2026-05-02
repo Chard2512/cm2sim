@@ -8,7 +8,7 @@ std::string reprBlock(Block* block, bool verbose) {
     } else {
         return block->getIDName() 
                + "(state=" + std::to_string(block->getState()) 
-               + ", pos=(" + std::to_string(block->getPos().x) + ", " + std::to_string(block->getPos().y) + ")"
+               + ", pos=(" + std::to_string(block->getPosition().x) + ", " + std::to_string(block->getPosition().y) + ")"
                + ")";
     }
 }
