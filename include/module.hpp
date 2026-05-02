@@ -5,14 +5,14 @@
 
 class Module {
 private:
-    std::vector<Block> blocks = {};
+    std::vector<Block*> blocks = {};
 
 public:
     Module();
 
     std::vector<Block*> getBlocks() const;
     Block* getBlock(int index) const;
-    void addBlock(Block block) { blocks.push_back(block); };
+    void addBlock(Block* block) { blocks.push_back(block); };
     void connectBlocks(Block* block0, Block* block1) { 
         block0->addOutput(block1);
         block1->addInput(block0);
