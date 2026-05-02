@@ -1,5 +1,5 @@
 # Minimum required CMake version
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.28)
 
 # Project name and language
 project(cm2sim VERSION 0.1.0 LANGUAGES CXX)
@@ -33,19 +33,19 @@ set(SOURCES
     src/cm2sim.cpp
     src/parser.cpp
     src/strutils.cpp
-    src/vector2.cpp
     src/module.cpp
     src/block.cpp
     src/cliview.cpp
+    src/sfmlview2.cpp
 )
 
 set(HEADERS
     include/block.hpp
     include/module.hpp
-    include/vector2.hpp
     include/parser.hpp
     include/strutils.hpp
     include/cliview.hpp
+    include/sfmlview2.hpp
 )
 
 # ============================================================================
@@ -66,10 +66,18 @@ else()
 endif()
 
 # ============================================================================
-# Find Packages (example)
+# Packages
 # ============================================================================
-# find_package(OpenMP REQUIRED)
-# target_link_libraries(${PROJECT_NAME} PRIVATE OpenMP::OpenMP_CXX)
+include(FetchContent)
+FetchContent_Declare(SFML
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
+    GIT_TAG 3.1.0
+    GIT_SHALLOW ON
+    EXCLUDE_FROM_ALL
+    SYSTEM)
+FetchContent_MakeAvailable(SFML)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics)
 
 # ============================================================================
 # Testing
