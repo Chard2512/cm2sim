@@ -1,6 +1,6 @@
-# cm2sim *WIP*
+# SFCM2 *WIP*
 
-A Circuit Maker 2 (Roblox) 2D simulator written in C++ with SDL2.
+A simple, fast and cross-platform Circuit Maker 2 (Roblox) simulator written in C++ with SFML.
 
 # Motivation
 
