@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <optional>
 #include "parser.hpp"
 #include "strutils.hpp"
 
@@ -22,10 +21,10 @@ bool loadModule(Module& module, std::string filepath) {
     for (auto blockstring : blockstrings) {
         if (!blockstring.empty()) {
             auto newBlock = parseBlockstring(blockstring);
-            if (!newBlock.has_value()) {
+            if (newBlock == nullptr) {
                 return false;
             }
-            module.addBlock(*newBlock);
+            module.addBlock(newBlock);
         }
     }
 
@@ -48,16 +47,16 @@ bool loadModule(Module& module, std::string filepath) {
     return true;
 }
 
-std::optional<Block> parseBlockstring(std::string blockstring) {
+Block* parseBlockstring(std::string blockstring) {
     if (blockstring.empty()) {
         std::cerr << "Error: trying to parse a malformed blockstring" << std::endl;
-        return std::nullopt;
+        return nullptr;
     }
 
     std::vector<std::string> blockParams = split(blockstring, ',');
     if (blockParams.size() != 6) {
         std::cerr << "Error: trying to parse a malformed blockstring" << std::endl;
-        return std::nullopt;
+        return nullptr;
     }
     
     BlockID blockID = static_cast<BlockID>(std::stoi(blockParams[0]));
@@ -67,5 +66,5 @@ std::optional<Block> parseBlockstring(std::string blockstring) {
         std::stod(blockParams[4])
     );
 
-    return *BlockFactory::createBlock(blockID, state, pos);
+    return BlockFactory::createBlock(blockID, state, pos);
 }
