@@ -1,4 +1,5 @@
 .cache
+.vscode
 bin
 tests
 CMakeLists.txt.user
