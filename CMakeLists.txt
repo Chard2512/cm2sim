@@ -27,6 +27,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(SOURCES
     src/cm2sim.cpp
     src/parser.cpp
+    src/strutils.cpp
     src/vector2.cpp
     src/module.cpp
     src/block.cpp
@@ -37,6 +38,7 @@ set(HEADERS
     include/module.hpp
     include/vector2.hpp
     include/parser.hpp
+    include/strutils.hpp
 )
 
 # ============================================================================
