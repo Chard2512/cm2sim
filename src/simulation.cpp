@@ -82,8 +82,6 @@ void Simulation::renderGraphical() {
     if ((elapsed - lastRenderTime) >= renderInterval) {
         lastRenderTime = elapsed;
 
-        std::cout << "Frame drawn" << std::endl;
-
         window.clear();
         SFMLView::renderModule(&window, mainModule);
         window.setView(view);
