@@ -7,6 +7,8 @@
 class SFMLView {
 private:
     static RectangleShape getBlockRectangle(Block* block);
+    static RectangleShape getConnectionLine(Block* block0, Block* block1);
+    static void renderConnection(RenderWindow* window, Block* block0, Block* block1);
     static void renderBlock(RenderWindow* window, Block* block);
 
 public:
