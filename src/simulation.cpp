@@ -93,8 +93,8 @@ void Simulation::renderGraphical() {
 
 void Simulation::runGraphical() {
     // Fix hardwired initialization
-    RenderWindow window(VideoMode({960, 544}), "SFCM2");
-    View view(Vector2f(0, 0), Vector2f(32, 18));
+    window = RenderWindow(VideoMode({960, 544}), "SFCM2");
+    view = View(Vector2f(0, 0), Vector2f(32, 18));
 
     while (window.isOpen()) {
         elapsed = clock.getElapsedTime();
