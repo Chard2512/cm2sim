@@ -4,13 +4,13 @@ RectangleShape SFMLView::getBlockRectangle(Block* block) {
     RectangleShape blockRectangle = RectangleShape();
     blockRectangle.setPosition(block->getPosition());
     blockRectangle.setSize({1, 1});
-    blockRectangle.setOutlineThickness(1);
-    blockRectangle.setOutlineColor(Color(0x000000));
+    blockRectangle.setOutlineThickness(-0.05);
+    blockRectangle.setOutlineColor(Color(0x222222ff));
     // Change this to correspond to blockID
     if (block->getState()) {
-        blockRectangle.setFillColor(Color(0xffffff)); 
+        blockRectangle.setFillColor(Color(0xffffffff)); 
     } else {
-        blockRectangle.setFillColor(Color(0xeeeeee)); 
+        blockRectangle.setFillColor(Color(0x222222ff)); 
     }
 
     return blockRectangle;
