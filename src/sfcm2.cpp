@@ -24,7 +24,7 @@ void usage() {
               << std::setw(30) << "  -f, --fast"
               << "Run simulation at tickrate limit.\n"
               << std::setw(30) << "  -p, --fps=RATE"
-              << "Set simulation framerate (default: 30).\n"
+              << "Set simulation framerate (default: 60).\n"
               << std::setw(30) << "  -h, --help"
               << "Prints this help message.\n"
               << std::setw(30) << "  -v, --verbose"

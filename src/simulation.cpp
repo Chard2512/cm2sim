@@ -17,7 +17,7 @@ bool Simulation::Flags::debug = false;
 bool Simulation::Flags::fast = false;
 bool Simulation::Flags::verbose = false;
 
-double Simulation::framerate = 30;
+double Simulation::framerate = 60;
 double Simulation::tickrate = 20;
 
 uint64_t Simulation::stepCount = 0;
