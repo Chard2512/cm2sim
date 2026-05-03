@@ -62,8 +62,8 @@ Block* parseBlockstring(std::string blockstring) {
     BlockID blockID = static_cast<BlockID>(std::stoi(blockParams[0]));
     bool state = static_cast<bool>(std::stoi(blockParams[1]));
     Vector2f pos = Vector2f(
-        std::stod(blockParams[2]),
-        std::stod(blockParams[4])
+        std::stof(blockParams[2]),
+        std::stof(blockParams[4])
     );
 
     return BlockFactory::createBlock(blockID, state, pos);
