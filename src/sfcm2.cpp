@@ -1,13 +1,13 @@
 #include <iostream>
 #include <iomanip>
-#include <thread>
+#include <filesystem>
 #include "strutils.hpp"
 #include "parser.hpp"
-#include "cliview.hpp"
+#include "simulation.hpp"
+#define PROJECT_NAME "sfcm2"
 #define VERSION "0.1"
 
-double simulationTickrate = 20;
-double FPS = 30;
+const auto GLOBAL_CLOCK = Clock(); // To be removed
 
 std::string progName;
 
@@ -35,47 +35,13 @@ void usage() {
               << "Prints program's version." << std::endl;
 }
 
-void runSimulation(Module module, bool cliMode, bool fast, bool verbosity, bool debug) {
-    const auto renderInterval = milliseconds(static_cast<int32_t>(1000 / FPS));
-    auto simulationStepTime = microseconds(static_cast<int64_t>(1'000'000 / simulationTickrate));
-    auto clock = sf::Clock();
-    auto nextSimulationTime = simulationStepTime;
-    auto lastRenderTime = milliseconds(0);
-    uint64_t simulationStepCount = 0;
-    bool running = true;
-
-    while (running) {
-        auto elapsed = clock.getElapsedTime();
-
-        while (fast || elapsed >= nextSimulationTime) {
-            if (!fast) {
-                nextSimulationTime += simulationStepTime;
-            }
-            simulationStepCount++;
-
-            module.update();
-
-            if (fast) {
-                break;
-            }
-        }
-
-        if (cliMode && (elapsed - lastRenderTime) >= renderInterval) {
-            lastRenderTime = elapsed;
-
-            std::cout << "\033[2J\033[1;1H";
-            std::cout << std::string(60, '=') << "\n";
-            if (debug) {
-                std::cout << "Tickrate: " 
-                          << std::to_string(
-                             1'000'000
-                             * simulationStepCount 
-                             / elapsed.asMicroseconds())
-                             << "\n";
-            }
-            std::cout << "Step: " << std::to_string(simulationStepCount) << "\n\n";
-            std::cout << reprModule(&module, verbosity) << "\n\n";
-        }
+void send(std::string text, bool enable) {
+    if (enable) {
+        std::streamsize oldPrecision = std::cout.precision();
+        std::cout << std::fixed << std::setprecision(3);
+        auto elapsed = GLOBAL_CLOCK.getElapsedTime().asMilliseconds() / 1000.f;
+        std::cout << std::left << "[" << elapsed << std::setw(4) << "] " << text << "\n";
+        std::cout.precision(oldPrecision);
     }
 }
 
@@ -88,10 +54,6 @@ int main(int argc, char* argv[]) {
     }
 
     std::string filePath = "";
-    bool verbosity = false;
-    bool debug = false;
-    bool cliMode = false;
-    bool fast = false;
 
     for (int i = 1; i < argc; i++) {
         const std::string arg = argv[i];
@@ -100,30 +62,30 @@ int main(int argc, char* argv[]) {
             if (arg[1] == '-') {
                 std::string op = arg.substr(2);
                 if (op == "cli") {
-                    cliMode = true;
+                    Simulation::Flags::cliMode = true;
                 } else
                 if (op == "debug") {
-                    debug = true;
+                    Simulation::Flags::debug = true;
                 } else
                 if (op == "fast") {
-                    fast = true;
+                    Simulation::Flags::fast = true;
                 } else
                 if (op == "help") {
                     usage();
                     return 0;
                 } else
                 if (op == "verbose") {
-                    verbosity = true;
+                    Simulation::Flags::verbose = true;
                 } else
                 if (op == "version") {
-                    std::cout << "cm2sim " << VERSION << std::endl;
+                    std::cout << PROJECT_NAME << " " << VERSION << std::endl;
                     return 0;
                 } else
                 if (startsWith(op, "tickrate=")) {
-                    simulationTickrate = std::stod(substrFromChar(op, '='));
+                    Simulation::tickrate = std::stod(substrFromCharStart(op, '='));
                 } else
                 if (startsWith(op, "fps=")) {
-                    FPS = std::stod(substrFromChar(op, '='));
+                    Simulation::framerate = std::stod(substrFromCharStart(op, '='));
                 } else {
                     std::cerr << "Invalid option '" << op << "'." << std::endl;
                     return 1;
@@ -141,7 +103,7 @@ int main(int argc, char* argv[]) {
                                 std::cerr << "Run at which FPS??" << std::endl;
                                 return 1;
                             }
-                            FPS = std::stod(argv[i + 1]);
+                            Simulation::framerate = std::stod(argv[i + 1]);
                             break;
                         }
                         if (ops[j] == 't') {
@@ -149,30 +111,28 @@ int main(int argc, char* argv[]) {
                                 std::cerr << "I require a tickrate definition! :<" << std::endl;
                                 return 1;
                             }
-                            simulationTickrate = std::stod(argv[i + 1]);
+                            Simulation::tickrate = std::stod(argv[i + 1]);
 
-                            if (simulationTickrate >= 100000) {
-                                if (!(j + 1 < ops.size() && ops[j + 1] == 'f')) {
-                                    std::cerr << "Ooh, that's so big tickrate, Senpai! O.O\n";
-                                    std::cerr << "Have you considered to use --fast flag instead?\n";
-                                    return 1;
-                                }
+                            if (Simulation::tickrate > 1000000) {
+                                std::cerr << "Ooh, that's too big tickrate, Senpai! O.O\n";
+                                std::cerr << "I can't handle that much without --fast flag...\n";
+                                return 1;
                             }
 
                             break;
                         }
                     }
                     if (ops[j] == 'c') {
-                        cliMode = true;
+                        Simulation::Flags::cliMode = true;
                     } else
                     if (ops[j] == 'd') {
-                        debug = true;
+                        Simulation::Flags::debug = true;
                     } else
                     if (ops[j] == 'f') {
-                        fast = true;
+                        Simulation::Flags::fast = true;
                     } else
                     if (ops[j] == 'v') {
-                        verbosity = true;
+                        Simulation::Flags::verbose = true;
                     } else {
                         std::cerr << "Invalid option '" << ops[j] << "'." << std::endl;
                         return 1;
@@ -187,14 +147,26 @@ int main(int argc, char* argv[]) {
     }
 
     if (!filePath.empty()) {
+        std::filesystem::path p(filePath);
+        if (!std::filesystem::exists(p)) {
+            std::cerr << "The file doesn't exist." << std::endl;
+            return 1;
+        }
+        
+        std::string ext = substrFromCharEnd(filePath, '.');
+        if (!ext.empty() && ext != "txt") {
+            std::cerr << "Hmm... that doesn't look like something I can read." << std::endl;
+            return 1;
+        }
+
         Module module = Module();
         if (!loadModule(module, filePath)) {
             return 1;
         }
-        runSimulation(module, cliMode, fast, verbosity, debug);
+        Simulation::run(&module);
         return 0;
     } else {
-        std::cerr << "Which file do you want me to read? :<\n";
+        std::cerr << "Which file do you want me to run? :<" << std::endl;
         return 1;
     }
 }
