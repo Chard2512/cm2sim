@@ -104,6 +104,7 @@ int main(int argc, char* argv[]) {
                                 return 1;
                             }
                             Simulation::framerate = std::stod(argv[i + 1]);
+                            i++;
                             break;
                         }
                         if (ops[j] == 't') {
@@ -112,6 +113,7 @@ int main(int argc, char* argv[]) {
                                 return 1;
                             }
                             Simulation::tickrate = std::stod(argv[i + 1]);
+                            i++;
 
                             if (Simulation::tickrate > 1000000) {
                                 std::cerr << "Ooh, that's too big tickrate, Senpai! O.O\n";
