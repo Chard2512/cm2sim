@@ -5,7 +5,7 @@ RectangleShape SFMLView::getBlockRectangle(Block* block) {
     blockRectangle.setPosition(block->getPosition());
     blockRectangle.setSize({1, 1});
     blockRectangle.setOutlineThickness(-0.05);
-    blockRectangle.setOutlineColor(Color(0x222222ff));
+    blockRectangle.setOutlineColor(Color(0x111111ff));
     // Change this to correspond to blockID
     if (block->getState()) {
         blockRectangle.setFillColor(Color(0xffffffff)); 
