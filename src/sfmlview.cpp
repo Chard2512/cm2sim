@@ -42,11 +42,20 @@ RectangleShape SFMLView::getConnectionLine(Block* block0, Block* block1) {
         block1->getPosition().y - block0->getPosition().y
     );
 
+    Color lineBaseColor = block0->getColor();
+    lineBaseColor.a = 127;
+
     RectangleShape line(Vector2f(length, 0.1f));
     if (block0->getState()) {
-        line.setFillColor(Color(255, 255, 255, 255));
+        line.setFillColor(lineBaseColor);
     } else {
-        line.setFillColor(Color(63, 63, 63, 255));
+        Color darkerLineColor = Color(
+            lineBaseColor.r * 0.25f,
+            lineBaseColor.g * 0.25f,
+            lineBaseColor.b * 0.25f,
+            lineBaseColor.a
+        );
+        line.setFillColor(darkerLineColor);
     }
 
     line.setOrigin(Vector2f(0, 0.1f));
@@ -66,7 +75,7 @@ RectangleShape SFMLView::getConnectionLine(Block* block0, Block* block1) {
 
 void SFMLView::renderConnection(RenderWindow* window, Block* block0, Block* block1) {
     RectangleShape connectionLine = getConnectionLine(block0, block1);
-    window->draw(connectionLine);
+    window->draw(connectionLine, BlendAdd);
 }
 
 void SFMLView::renderModule(RenderWindow* window, Module* module) {
