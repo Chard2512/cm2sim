@@ -94,11 +94,58 @@ void Simulation::runGraphical() {
     window = RenderWindow(VideoMode({960, 544}), "SFCM2");
     view = View(Vector2f(0, 0), Vector2f(32, 18));
 
+    Vector2i previousMousePos;
+
+    bool draggingView = false;
+
     while (window.isOpen()) {
         elapsed = clock.getElapsedTime();
         while (const std::optional event = window.pollEvent()) {
             if (event->is<Event::Closed>()) {
                 window.close();
+            } else
+            if (const auto* pressed = event->getIf<Event::MouseButtonPressed>()) {
+                if (pressed->button == Mouse::Button::Right) {
+                    draggingView = true;
+
+                    previousMousePos = Mouse::getPosition(window);
+                }
+            } else
+            if (const auto* released = event->getIf<Event::MouseButtonReleased>()) {
+                if (released->button == Mouse::Button::Right) {
+                    draggingView = false;
+                }
+            } else
+            if (const auto* moved = event->getIf<sf::Event::MouseMoved>()) {
+                if (draggingView) {
+                    sf::Vector2i currentMousePos(moved->position.x, moved->position.y);
+                    
+                    // Calculate movement delta in world coordinates
+                    sf::Vector2f delta = window.mapPixelToCoords(currentMousePos) -
+                                        window.mapPixelToCoords(previousMousePos);
+                    
+                    // Move view opposite to mouse movement
+                    view.move(-delta);
+                    
+                    previousMousePos = currentMousePos;
+                }
+            } else
+            if (const auto* scrolled = event->getIf<sf::Event::MouseWheelScrolled>()) {
+                if (scrolled->wheel == Mouse::Wheel::Vertical) {
+                    float delta = scrolled->delta;
+
+                    Vector2i mousePixelPos = Mouse::getPosition(window);
+
+                    Vector2f beforeZoom = window.mapPixelToCoords(mousePixelPos);
+
+                    float zoomFactor = 1.0f * powf(0.7, delta);
+
+                    view.zoom(zoomFactor);
+
+                    Vector2f afterZoom = window.mapPixelToCoords(mousePixelPos, view);
+
+                    view.move(beforeZoom - afterZoom);
+                }
             }
         }
 
