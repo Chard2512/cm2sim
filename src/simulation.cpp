@@ -94,6 +94,8 @@ void Simulation::runGraphical() {
     window = RenderWindow(VideoMode({960, 544}), "SFCM2");
     view = View(Vector2f(0, 0), Vector2f(32, 18));
 
+    window.setFramerateLimit(0);
+
     Vector2i previousMousePos;
 
     bool draggingView = false;
