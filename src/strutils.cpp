@@ -21,6 +21,14 @@ std::string substrFromChar(std::string text, const char sep) {
     return text.substr(text.find(sep) + 1);
 }
 
+std::string substrFromCharStart(std::string text, const char sep) {
+    return substrFromChar(text, sep);
+}
+
+std::string substrFromCharEnd(std::string text, const char sep) {
+    return text.substr(text.rfind(sep) + 1);
+}
+
 bool startsWith(std::string text, const std::string match) {
     return (text.find(match) == 0);
 }
