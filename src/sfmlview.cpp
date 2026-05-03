@@ -45,7 +45,7 @@ RectangleShape SFMLView::getConnectionLine(Block* block0, Block* block1) {
     Color lineBaseColor = block0->getColor();
     lineBaseColor.a = 127;
 
-    RectangleShape line(Vector2f(length, 0.1f));
+    RectangleShape line(Vector2f(length, 0.5f));
     if (block0->getState()) {
         line.setFillColor(lineBaseColor);
     } else {
@@ -58,7 +58,7 @@ RectangleShape SFMLView::getConnectionLine(Block* block0, Block* block1) {
         line.setFillColor(darkerLineColor);
     }
 
-    line.setOrigin(Vector2f(0, 0.1f));
+    line.setOrigin(Vector2f(0, 0.25f));
     line.setPosition(block0->getPosition());
     line.move(Vector2f(0.5, 0.5)); // The block Rectangle might have different size, fix this later
 
