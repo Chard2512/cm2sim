@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.28)
 
 # Project name and language
-project(sfmc2 VERSION 0.1.0 LANGUAGES CXX)
+project(sfcm2 VERSION 0.1.0 LANGUAGES CXX)
 
 # ============================================================================
 # Compiler Configuration
@@ -36,7 +36,8 @@ set(SOURCES
     src/module.cpp
     src/block.cpp
     src/cliview.cpp
-    src/sfmlview2.cpp
+    src/sfmlview.cpp
+    src/simulation.cpp
 )
 
 set(HEADERS
@@ -45,7 +46,8 @@ set(HEADERS
     include/parser.hpp
     include/strutils.hpp
     include/cliview.hpp
-    include/sfmlview2.hpp
+    include/sfmlview.hpp
+    include/simulation.hpp
 )
 
 # ============================================================================
