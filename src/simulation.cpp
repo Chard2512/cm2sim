@@ -8,9 +8,9 @@ RenderWindow Simulation::window;
 View Simulation::view;
 Time Simulation::elapsed = microseconds(0);
 Time Simulation::nextStepTime = microseconds(0);
-Time Simulation::renderInterval = milliseconds(1'000 / framerate);
+Time Simulation::renderInterval;
 Time Simulation::lastRenderTime = microseconds(0);
-Time Simulation::stepInterval = microseconds(1'000'000 / tickrate);
+Time Simulation::stepInterval;
 
 bool Simulation::Flags::cliMode = false;
 bool Simulation::Flags::debug = false;
@@ -110,6 +110,8 @@ void Simulation::runGraphical() {
 void Simulation::run(Module *module) {
     clock = Clock();
     mainModule = module;
+    Simulation::renderInterval = milliseconds(1'000 / framerate);
+    Simulation::stepInterval = microseconds(1'000'000 / tickrate);
 
     if (Flags::cliMode) {
         runCLI();
