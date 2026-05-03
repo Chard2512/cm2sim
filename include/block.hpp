@@ -9,13 +9,23 @@
 
 using namespace sf;
 
+/* 
+How to set a new block:
+
+- Create BlockID
+- Create the new block class
+- Set the block to be accessed in BlockFactory
+- Implement the updateFunction in block.cpp
+*/
+
 enum class BlockID {
     NOR = 0,
     AND = 1,
     OR = 2,
     XOR = 3,
+    FLIPFLOP = 5,
     NAND = 10,
-    XNOR = 11,
+    XNOR = 11
 };
 
 Color getBlockColor(BlockID blockID);
@@ -44,7 +54,7 @@ public:
         outputs.push_back(output);
     }
     Color getColor() const { return getBlockColor(getID()); };
-    virtual bool updateFunction() const {
+    virtual bool updateFunction() {
         return false;
     }
     virtual BlockID getID() const = 0;
@@ -54,7 +64,7 @@ public:
 class NOR : public Block {
 
 public:
-    bool updateFunction() const override;
+    bool updateFunction() override;
     BlockID getID() const override { return BlockID::NOR; }
     std::string getIDName() const override { return "NOR"; }
 };
@@ -62,7 +72,7 @@ public:
 class AND : public Block {
 
 public:
-    bool updateFunction() const override;
+    bool updateFunction() override;
     BlockID getID() const override { return BlockID::AND; }
     std::string getIDName() const override { return "AND"; }
 };
@@ -70,7 +80,7 @@ public:
 class OR : public Block {
 
 public:
-    bool updateFunction() const override;
+    bool updateFunction() override;
     BlockID getID() const override { return BlockID::OR; }
     std::string getIDName() const override { return "OR"; }
 };
@@ -78,7 +88,7 @@ public:
 class XOR : public Block {
 
 public:
-    bool updateFunction() const override;
+    bool updateFunction() override;
     BlockID getID() const override { return BlockID::XOR; }
     std::string getIDName() const override { return "XOR"; }
 };
@@ -86,7 +96,7 @@ public:
 class NAND : public Block {
 
 public:
-    bool updateFunction() const override;
+    bool updateFunction() override;
     BlockID getID() const override { return BlockID::NAND; }
     std::string getIDName() const override { return "NAND"; }
 };
@@ -94,9 +104,19 @@ public:
 class XNOR : public Block {
 
 public:
-    bool updateFunction() const override;
+    bool updateFunction() override;
     BlockID getID() const override { return BlockID::XNOR; }
     std::string getIDName() const override { return "XNOR"; }
+};
+
+class FLIPFLOP : public Block {
+private:
+    bool lastEnableState = false;
+
+public:
+    bool updateFunction() override;
+    BlockID getID() const override { return BlockID::FLIPFLOP; }
+    std::string getIDName() const override { return "FLIPFLOP"; }
 };
 
 class BlockFactory {
@@ -126,6 +146,9 @@ public:
                 break;
             case BlockID::XNOR:
                 newBlock = new XNOR();
+                break;
+            case BlockID::FLIPFLOP:
+                newBlock = new FLIPFLOP();
                 break;
             default:
                 std::cerr << "Not recognized/supported block id '" << static_cast<int>(id) << "'." << std::endl;

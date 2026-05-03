@@ -8,13 +8,14 @@ Color getBlockColor(BlockID blockID) {
         {BlockID::OR,   Color(0, 241, 29, 255)},
         {BlockID::XOR,  Color(168, 0, 255, 255)},
         {BlockID::NAND, Color(0, 42, 89, 255)},
-        {BlockID::XNOR, Color(213, 0, 103, 255)}
+        {BlockID::XNOR, Color(213, 0, 103, 255)},
+        {BlockID::FLIPFLOP, Color(30, 30, 30, 255)}
     };
 
     return colorMap.at(blockID);
 }
 
-bool NOR::updateFunction() const {
+bool NOR::updateFunction() {
     for (Block* input : inputs) {
         if (input->getState() == true) {
             return false;
@@ -23,7 +24,7 @@ bool NOR::updateFunction() const {
     return true;
 }
 
-bool AND::updateFunction() const {
+bool AND::updateFunction() {
     for (Block* input : inputs) {
         if (input->getState() == false) {
             return false;
@@ -32,7 +33,7 @@ bool AND::updateFunction() const {
     return true;
 }
 
-bool OR::updateFunction() const {
+bool OR::updateFunction() {
     for (Block* input : inputs) {
         if (input->getState() == true) {
             return true;
@@ -41,7 +42,7 @@ bool OR::updateFunction() const {
     return false;
 }
 
-bool NAND::updateFunction() const {
+bool NAND::updateFunction() {
     for (Block* input : inputs) {
         if (input->getState() == false) {
             return true;
@@ -50,7 +51,7 @@ bool NAND::updateFunction() const {
     return false;
 }
 
-bool XOR::updateFunction() const {
+bool XOR::updateFunction() {
     bool tmp = false;
     for (Block* input : inputs) {
         if (input->getState() == true) {
@@ -60,7 +61,7 @@ bool XOR::updateFunction() const {
     return tmp;
 }
 
-bool XNOR::updateFunction() const {
+bool XNOR::updateFunction() {
     bool tmp = true;
     for (Block* input : inputs) {
         if (input->getState() == true) {
@@ -68,4 +69,19 @@ bool XNOR::updateFunction() const {
         }
     }
     return tmp;
+}
+
+bool FLIPFLOP::updateFunction() {
+    bool enable = false;
+    for (Block* input : inputs) {
+        if (input->getState() == true) {
+            enable = true;
+            break;
+        }
+    }
+    bool tmp = enable;
+    enable &= !lastEnableState;
+    lastEnableState = tmp;
+
+    return state ^ enable;
 }
