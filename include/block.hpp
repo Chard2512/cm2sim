@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <unordered_map>
 
 using namespace sf;
 
@@ -16,6 +17,8 @@ enum class BlockID {
     NAND = 10,
     XNOR = 11,
 };
+
+Color getBlockColor(BlockID blockID);
 
 class Block {
 protected:
@@ -40,6 +43,7 @@ public:
     void addOutput(Block* output) {
         outputs.push_back(output);
     }
+    Color getColor() const { return getBlockColor(getID()); };
     virtual bool updateFunction() const {
         return false;
     }
@@ -50,7 +54,7 @@ public:
 class NOR : public Block {
 
 public:
-    bool updateFunction() const;
+    bool updateFunction() const override;
     BlockID getID() const override { return BlockID::NOR; }
     std::string getIDName() const override { return "NOR"; }
 };
@@ -58,7 +62,7 @@ public:
 class AND : public Block {
 
 public:
-    bool updateFunction() const;
+    bool updateFunction() const override;
     BlockID getID() const override { return BlockID::AND; }
     std::string getIDName() const override { return "AND"; }
 };
@@ -66,7 +70,7 @@ public:
 class OR : public Block {
 
 public:
-    bool updateFunction() const;
+    bool updateFunction() const override;
     BlockID getID() const override { return BlockID::OR; }
     std::string getIDName() const override { return "OR"; }
 };
@@ -74,7 +78,7 @@ public:
 class XOR : public Block {
 
 public:
-    bool updateFunction() const;
+    bool updateFunction() const override;
     BlockID getID() const override { return BlockID::XOR; }
     std::string getIDName() const override { return "XOR"; }
 };
@@ -82,7 +86,7 @@ public:
 class NAND : public Block {
 
 public:
-    bool updateFunction() const;
+    bool updateFunction() const override;
     BlockID getID() const override { return BlockID::NAND; }
     std::string getIDName() const override { return "NAND"; }
 };
@@ -90,7 +94,7 @@ public:
 class XNOR : public Block {
 
 public:
-    bool updateFunction() const;
+    bool updateFunction() const override;
     BlockID getID() const override { return BlockID::XNOR; }
     std::string getIDName() const override { return "XNOR"; }
 };
