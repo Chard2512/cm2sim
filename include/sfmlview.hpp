@@ -6,8 +6,6 @@
 
 class SFMLView {
 private:
-    static float worldToScreen(float len);
-    static Vector2f worldToScreen(Vector2f pos);
     static RectangleShape getBlockRectangle(Block* block);
     static void renderBlock(RenderWindow* window, Block* block);
 
