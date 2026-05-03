@@ -7,7 +7,7 @@ Color getBlockColor(BlockID blockID) {
         {BlockID::AND,  Color(0, 121, 255, 255)},
         {BlockID::OR,   Color(0, 241, 29, 255)},
         {BlockID::XOR,  Color(168, 0, 255, 255)},
-        {BlockID::NAND, Color(0, 42, 89, 0)},
+        {BlockID::NAND, Color(0, 42, 89, 255)},
         {BlockID::XNOR, Color(213, 0, 103, 255)}
     };
 
