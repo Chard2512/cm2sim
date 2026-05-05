@@ -2,6 +2,7 @@
 #define cm2_block_hpp
 
 #include <vector>
+#include <tuple>
 #include <string>
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -25,7 +26,8 @@ enum class BlockID {
     XOR = 3,
     FLIPFLOP = 5,
     NAND = 10,
-    XNOR = 11
+    XNOR = 11,
+    NODE = 15
 };
 
 Color getBlockColor(BlockID blockID);
@@ -119,40 +121,77 @@ public:
     std::string getIDName() const override { return "FLIPFLOP"; }
 };
 
+class DELAY : public Block {
+private:
+    uint32_t delay;
+    std::vector<uint32_t> queue;
+
+public:
+    bool updateFunction() override;
+    void setDelay(uint32_t newDelay) { delay = newDelay; }
+    BlockID getID() const override { return BlockID::DELAY; }
+    std::string getIDName() const override { return "DELAY"; }
+};
+
 class BlockFactory {
 public:
     static Block* createBlock(
         BlockID id, 
         bool state, 
-        Vector2f pos
+        Vector2f pos,
+        std::vector<int> properties
     ) {
         Block* newBlock = nullptr;
         
         switch (id) {
             case BlockID::NOR:
+            {
                 newBlock = new NOR();
                 break;
+            }
             case BlockID::AND:
+            {
                 newBlock = new AND();
                 break;
+            }
             case BlockID::OR:
+            {
                 newBlock = new OR();
                 break;
+            }
             case BlockID::XOR:
+            {
                 newBlock = new XOR();
                 break;
+            }
             case BlockID::NAND:
+            {
                 newBlock = new NAND();
                 break;
+            }
             case BlockID::XNOR:
+            {
                 newBlock = new XNOR();
                 break;
+            }
             case BlockID::FLIPFLOP:
+            {
                 newBlock = new FLIPFLOP();
                 break;
+            }
+            case BlockID::DELAY:
+            {
+                newBlock = new DELAY();
+                DELAY* delayBlock = dynamic_cast<DELAY*>(newBlock);
+                uint32_t delay = static_cast<uint32_t>(properties[0]);
+                delayBlock->setDelay(delay);
+                break;
+            }
             default:
+            {
                 std::cerr << "Not recognized/supported block id '" << static_cast<int>(id) << "'." << std::endl;
                 return nullptr;
+            }
         }
         
         newBlock->setPosition(pos);

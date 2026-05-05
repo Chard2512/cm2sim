@@ -9,7 +9,8 @@ Color getBlockColor(BlockID blockID) {
         {BlockID::XOR,  Color(168, 0, 255, 255)},
         {BlockID::NAND, Color(0, 42, 89, 255)},
         {BlockID::XNOR, Color(213, 0, 103, 255)},
-        {BlockID::FLIPFLOP, Color(30, 30, 30, 255)}
+        {BlockID::FLIPFLOP, Color(30, 30, 30, 255)},
+        {BlockID::DELAY, Color(98, 24, 148, 255)}
     };
 
     return colorMap.at(blockID);
@@ -84,4 +85,30 @@ bool FLIPFLOP::updateFunction() {
     lastEnableState = tmp;
 
     return state ^ enable;
+}
+
+bool DELAY::updateFunction() {
+    bool enable = false;
+    for (Block* input : inputs) {
+        if (input->getState() == true) {
+            enable = true;
+            break;
+        }
+    }
+    if (enable) {
+        queue.push_back(0);
+    }
+
+    bool consumed = false;
+    for (size_t i = 0; i < queue.size(); i++) {
+        queue[i]++;
+        if (queue[i] >= delay) {
+            std::swap(queue[i], queue.back());
+            queue.pop_back();
+            consumed = true;
+            i--;
+        }
+    }
+
+    return consumed;
 }
