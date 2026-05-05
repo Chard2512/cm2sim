@@ -27,7 +27,7 @@ enum class BlockID {
     FLIPFLOP = 5,
     NAND = 10,
     XNOR = 11,
-    NODE = 15
+    DELAY = 16
 };
 
 Color getBlockColor(BlockID blockID);
