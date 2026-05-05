@@ -58,13 +58,19 @@ Block* parseBlockstring(std::string blockstring) {
         std::cerr << "Error: trying to parse a malformed blockstring" << std::endl;
         return nullptr;
     }
-    
+
     BlockID blockID = static_cast<BlockID>(std::stoi(blockParams[0]));
     bool state = static_cast<bool>(std::stoi(blockParams[1]));
     Vector2f pos = Vector2f(
         std::stof(blockParams[2]),
         std::stof(blockParams[4])
     );
+    std::vector<int> properties;
+    if (!blockParams[5].empty()) {
+        for (auto property : split(blockParams[5], '+')) {
+            properties.push_back(std::stoi(property));
+        }
+    }
 
-    return BlockFactory::createBlock(blockID, state, pos);
+    return BlockFactory::createBlock(blockID, state, pos, properties);
 }
