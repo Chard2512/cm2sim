@@ -1,0 +1,213 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <iomanip>
+#include "io/parser.hpp"
+#include "io/strutils.hpp"
+#define PROJECT_NAME "sfcm2"
+#define VERSION "0.1"
+
+void usage(const std::string &progName)
+{
+    std::cout << "Usage: " << progName << " [OPTION]... [FILE]\n";
+    std::cout << "Run a simulation of a Circuit Maker 2 module.\n\n";
+    std::cout << "Example: " << progName << " savestring.txt \n\n";
+    std::cout << "Arguments:\n";
+    std::cout << std::left
+              << std::setw(30) << "  -p, --fps=RATE"
+              << "Set simulation framerate (default: 60).\n"
+              << std::setw(30) << "  -h, --help"
+              << "Prints this help message.\n"
+              << std::setw(30) << "  -t, --tickrate=RATE"
+              << "Set simulation tickrate (default: 20).\n"
+              << std::setw(30) << "  --version"
+              << "Prints program's version." << std::endl;
+}
+
+bool loadModule(Module &module, std::string filepath)
+{
+    std::ifstream file(filepath);
+    if (!file.is_open())
+    {
+        std::cerr << "Could not open file \"" << filepath << "\"." << std::endl;
+        return false;
+    }
+
+    std::string savestring;
+    std::getline(file, savestring);
+
+    auto fields = split(savestring, '?');
+    auto blockstrings = split(fields[0], ';');
+    auto wirestrings = split(fields[1], ';');
+
+    for (auto blockstring : blockstrings)
+    {
+        if (!blockstring.empty())
+        {
+            auto newBlock = parseBlockstring(blockstring);
+            if (newBlock == nullptr)
+            {
+                return false;
+            }
+            module.addBlock(newBlock);
+        }
+    }
+
+    for (auto wirestring : wirestrings)
+    {
+        if (!wirestring.empty())
+        {
+            auto blocksStr = split(wirestring, ',');
+            if (blocksStr.size() != 2)
+            {
+                std::cerr << "Error: trying to parse a malformed wirestring" << std::endl;
+                return false;
+            }
+
+            int block0Index = std::stoi(blocksStr[0]) - 1;
+            int block1Index = std::stoi(blocksStr[1]) - 1;
+            Block *block0 = module.getBlock(block0Index);
+            Block *block1 = module.getBlock(block1Index);
+            module.connectBlocks(block0, block1);
+        }
+    }
+
+    return true;
+}
+
+Block *parseBlockstring(std::string blockstring)
+{
+    if (blockstring.empty())
+    {
+        std::cerr << "Error: trying to parse a malformed blockstring" << std::endl;
+        return nullptr;
+    }
+
+    std::vector<std::string> blockParams = split(blockstring, ',');
+    if (blockParams.size() != 6)
+    {
+        std::cerr << "Error: trying to parse a malformed blockstring" << std::endl;
+        return nullptr;
+    }
+
+    BlockID blockID = static_cast<BlockID>(std::stoi(blockParams[0]));
+    bool state = static_cast<bool>(std::stoi(blockParams[1]));
+    sf::Vector2f pos = sf::Vector2f(
+        std::stof(blockParams[2]),
+        std::stof(blockParams[4]));
+    std::vector<int> properties;
+    if (!blockParams[5].empty())
+    {
+        for (auto property : split(blockParams[5], '+'))
+        {
+            properties.push_back(std::stoi(property));
+        }
+    }
+
+    return BlockFactory::createBlock(blockID, state, pos, properties);
+}
+
+ArgParseStatus parseArgs(Args &args, int argc, char *argv[])
+{
+    std::string progName = argv[0];
+
+    if (argc == 1) {
+        usage(progName);
+        return ArgParseStatus::ExitSuccess;
+    }
+
+    for (int i = 1; i < argc; i++)
+    {
+        const std::string arg = argv[i];
+
+        if (arg[0] == '-')
+        {
+            if (arg[1] == '-')
+            {
+                std::string op = arg.substr(2);
+                if (op == "help")
+                {
+                    usage(progName);
+                    return ArgParseStatus::ExitSuccess;
+                }
+                else if (op == "version")
+                {
+                    std::cout << PROJECT_NAME << " " << VERSION << std::endl;
+                    return ArgParseStatus::ExitSuccess;
+                }
+                else if (startsWith(op, "tickrate="))
+                {
+                    args.simConfig.tickrate = std::stod(substrFromCharStart(op, '='));
+                }
+                else if (startsWith(op, "fps="))
+                {
+                    args.simConfig.framerate = std::stod(substrFromCharStart(op, '='));
+                }
+                else
+                {
+                    std::cerr << "Invalid option '" << op << "'." << std::endl;
+                    return ArgParseStatus::ExitFailure;
+                }
+            }
+            else
+            {
+                std::string ops = arg.substr(1);
+                for (size_t j = 0; j < ops.size(); j++)
+                {
+                    if (j == 0)
+                    {
+                        if (ops[j] == 'h')
+                        {
+                            usage(progName);
+                            return ArgParseStatus::ExitSuccess;
+                        }
+                        else if (ops[j] == 'p')
+                        {
+                            if (i + 1 >= argc)
+                            {
+                                std::cerr << "Run at which FPS??" << std::endl;
+                                return ArgParseStatus::ExitFailure;
+                            }
+                            args.simConfig.framerate = std::stod(argv[i + 1]);
+                            i++;
+                            break;
+                        }
+                        if (ops[j] == 't')
+                        {
+                            if (i + 1 >= argc)
+                            {
+                                std::cerr << "I require a tickrate definition! :<" << std::endl;
+                                return ArgParseStatus::ExitFailure;
+                            }
+                            args.simConfig.tickrate = std::stod(argv[i + 1]);
+                            i++;
+
+                            if (args.simConfig.tickrate > 1000000)
+                            {
+                                std::cerr << "Ooh, that's too big tickrate, Senpai! O.O\n";
+                                std::cerr << "I can't handle that much without --fast flag...\n";
+                                return ArgParseStatus::ExitFailure;
+                            }
+
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        std::cerr << "Invalid option '" << ops[j] << "'." << std::endl;
+                        return ArgParseStatus::ExitFailure;
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (args.moduleFilePath.empty())
+            {
+                args.moduleFilePath = arg;
+            }
+        }
+    }
+
+    return ArgParseStatus::Continue;
+}

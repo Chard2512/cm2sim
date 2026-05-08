@@ -1,5 +1,5 @@
-#ifndef strutils_hpp
-#define strutils_hpp
+#ifndef _CM2_STRUTILS_HPP_
+#define _CM2_STRUTILS_HPP_
 
 #include <vector>
 #include <string>

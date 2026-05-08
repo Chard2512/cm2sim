@@ -1,7 +1,8 @@
-#ifndef cm2_module_hpp
-#define cm2_module_hpp
+#ifndef _CM2_MODULE_HPP_
+#define _CM2_MODULE_HPP_
 
-#include "block.hpp"
+#include <memory>
+#include "core/block.hpp"
 
 class Module {
 private:
@@ -9,9 +10,10 @@ private:
 
 public:
     Module();
+    ~Module();
 
     std::vector<Block*> getBlocks() const;
-    Block* getBlock(int index) const;
+    Block* getBlock(uint64_t index) const;
     void addBlock(Block* block) { blocks.push_back(block); };
     void connectBlocks(Block* block0, Block* block1) { 
         block0->addOutput(block1);

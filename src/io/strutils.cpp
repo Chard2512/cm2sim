@@ -1,4 +1,4 @@
-#include "strutils.hpp"
+#include "io/strutils.hpp"
 
 std::vector<std::string> split(std::string text, const char sep) {
     std::vector<std::string> result;
@@ -17,12 +17,8 @@ std::vector<std::string> split(std::string text, const char sep) {
     return result;
 }
 
-std::string substrFromChar(std::string text, const char sep) {
-    return text.substr(text.find(sep) + 1);
-}
-
 std::string substrFromCharStart(std::string text, const char sep) {
-    return substrFromChar(text, sep);
+    return text.substr(text.find(sep) + 1);
 }
 
 std::string substrFromCharEnd(std::string text, const char sep) {

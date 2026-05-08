@@ -31,23 +31,13 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # ============================================================================
 set(SOURCES
     src/sfcm2.cpp
-    src/parser.cpp
-    src/strutils.cpp
-    src/module.cpp
-    src/block.cpp
-    src/cliview.cpp
-    src/sfmlview.cpp
-    src/simulation.cpp
-)
-
-set(HEADERS
-    include/block.hpp
-    include/module.hpp
-    include/parser.hpp
-    include/strutils.hpp
-    include/cliview.hpp
-    include/sfmlview.hpp
-    include/simulation.hpp
+    src/core/block.cpp
+    src/core/module.cpp
+    src/core/simulation.cpp
+    src/io/parser.cpp
+    src/io/strutils.cpp
+    src/render/renderer.cpp
+    src/user/camera.cpp
 )
 
 # ============================================================================
