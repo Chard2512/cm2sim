@@ -18,6 +18,7 @@ Block* Module::getBlock(uint64_t index) const {
 
 void Module::update() {
     std::vector<bool> nextState = {};
+    nextState.reserve(blocks.size());
     for (size_t i = 0; i < blocks.size(); i++) {
         nextState.push_back(blocks[i]->update());
     }
