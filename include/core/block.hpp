@@ -39,11 +39,11 @@ public:
     void setPosition(sf::Vector2f newPosition) { position = newPosition; }
     bool getState() const { return state; }
     void setState(bool newState) { state = newState; }
-    std::vector<Block*> getInputs() const { return inputs; }
+    const std::vector<Block*>& getInputs() const { return inputs; }
     void addInput(Block* input) {
         inputs.push_back(input);
     }
-    std::vector<Block*> getOutputs() const { return outputs; }
+    const std::vector<Block*>& getOutputs() const { return outputs; }
     void addOutput(Block* output) {
         outputs.push_back(output);
     }
