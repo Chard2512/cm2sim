@@ -16,6 +16,10 @@ Block* Module::getBlock(uint64_t index) const {
     return blocks[index];
 }
 
+uint64_t Module::getBlockCount() const {
+    return blocks.size();
+}
+
 void Module::update() {
     std::vector<bool> nextState = {};
     nextState.reserve(blocks.size());
