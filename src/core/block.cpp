@@ -144,15 +144,26 @@ Block* BlockFactory::createBlock(
         }
         case BlockID::DELAY:
         {
+            uint32_t delay;
+            if (properties.size() == 0) {
+                delay = 20;
+            } else {
+                delay = static_cast<uint32_t>(properties[0]);
+
+                if (delay > 1000) {
+                    std::cout << "WARNING: Delay block contains a delay property value superior to allowed (1000)." 
+                              << " This will be simulated, but consider to set it down.\n";
+                }
+            }
+
             newBlock = new DELAY();
             DELAY* delayBlock = dynamic_cast<DELAY*>(newBlock);
-            uint32_t delay = static_cast<uint32_t>(properties[0]);
             delayBlock->setDelay(delay);
             break;
         }
         default:
         {
-            std::cerr << "Not recognized/supported block id '" << static_cast<int>(id) << "'." << std::endl;
+            std::cerr << "ERROR: Not recognized/supported block id '" << static_cast<int>(id) << "'." << std::endl;
             return nullptr;
         }
     }

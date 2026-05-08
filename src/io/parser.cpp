@@ -122,32 +122,101 @@ Block *parseBlockstring(std::string blockstring)
 {
     if (blockstring.empty())
     {
-        std::cerr << "ERROR: Trying to parse a malformed blockstring." << std::endl;
+        std::cerr << "ERROR: Empty blockstring." << std::endl;
         return nullptr;
     }
 
     std::vector<std::string> blockParams = split(blockstring, ',');
     if (blockParams.size() != 6)
     {
-        std::cerr << "ERROR: Trying to parse a malformed blockstring." << std::endl;
+        std::cerr << "ERROR: Malformed blockstring - expected 6 parameters, got " 
+                  << blockParams.size() << ": \"" << blockstring << "\"" << std::endl;
         return nullptr;
     }
 
-    BlockID blockID = static_cast<BlockID>(std::stoi(blockParams[0]));
-    bool state = static_cast<bool>(std::stoi(blockParams[1]));
-    sf::Vector2f pos = sf::Vector2f(
-        std::stof(blockParams[2]),
-        std::stof(blockParams[4]));
+    int rawBlockID;
+    try {
+        rawBlockID = std::stoi(blockParams[0]);
+    } catch (const std::invalid_argument&) {
+        std::cerr << "ERROR: Invalid BlockID (non-numeric): \"" 
+                  << blockParams[0] << "\"" << std::endl;
+        return nullptr;
+    } catch (const std::out_of_range&) {
+        std::cerr << "ERROR: BlockID value out of range: \"" 
+                  << blockParams[0] << "\"" << std::endl;
+        return nullptr;
+    }
+    BlockID blockID = static_cast<BlockID>(rawBlockID);
+
+    int rawState;
+    try {
+        rawState = std::stoi(blockParams[1]);
+    } catch (const std::invalid_argument&) {
+        std::cerr << "ERROR: Invalid state value (non-numeric): \"" 
+                  << blockParams[1] << "\"" << std::endl;
+        return nullptr;
+    } catch (const std::out_of_range&) {
+        std::cerr << "ERROR: State value out of range: \"" 
+                  << blockParams[1] << "\"" << std::endl;
+        return nullptr;
+    }
+
+    if (rawState != 0 && rawState != 1) {
+        std::cerr << "ERROR: Invalid state value: " << rawState 
+                  << " (must be 0 or 1)" << std::endl;
+        return nullptr;
+    }
+    bool state = static_cast<bool>(rawState);
+
+    float posX, posY;
+    try {
+        posX = std::stof(blockParams[2]);
+        posY = std::stof(blockParams[4]);
+    } catch (const std::invalid_argument&) {
+        std::cerr << "ERROR: Invalid position coordinates (non-numeric): \"" 
+                  << blockParams[2] << "\", \"" << blockParams[4] << "\"" << std::endl;
+        return nullptr;
+    } catch (const std::out_of_range&) {
+        std::cerr << "ERROR: Position coordinates out of range: \"" 
+                  << blockParams[2] << "\", \"" << blockParams[4] << "\"" << std::endl;
+        return nullptr;
+    }
+
+    sf::Vector2f pos(posX, posY);
+
     std::vector<int> properties;
     if (!blockParams[5].empty())
     {
-        for (auto property : split(blockParams[5], '+'))
+        auto propertyStrings = split(blockParams[5], '+');
+
+        for (size_t i = 0; i < propertyStrings.size(); i++)
         {
-            properties.push_back(std::stoi(property));
+            try {
+
+                int property = std::stoi(propertyStrings[i]);
+                properties.push_back(property);
+
+            } catch (const std::invalid_argument&) {
+                std::cerr << "ERROR: Invalid property value (non-numeric): \"" 
+                          << propertyStrings[i] << "\"" << std::endl;
+                return nullptr;
+            } catch (const std::out_of_range&) {
+                std::cerr << "ERROR: Property value out of range: \"" 
+                          << propertyStrings[i] << "\"" << std::endl;
+                return nullptr;
+            }
         }
     }
+    
+    Block* newBlock = BlockFactory::createBlock(blockID, state, pos, properties);
 
-    return BlockFactory::createBlock(blockID, state, pos, properties);
+    if (!newBlock) {
+        std::cerr << "ERROR: Failed to create block of type " 
+                  << static_cast<int>(blockID) << std::endl;
+        return nullptr;
+    }
+
+     return newBlock;
 }
 
 ArgParseStatus parseArgs(Args &args, int argc, char *argv[])
