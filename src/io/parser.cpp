@@ -63,11 +63,54 @@ bool loadModule(Module &module, std::string filepath)
                 std::cerr << "Error: trying to parse a malformed wirestring" << std::endl;
                 return false;
             }
+            
+            uint64_t block0Index, block1Index;
 
-            int block0Index = std::stoi(blocksStr[0]) - 1;
-            int block1Index = std::stoi(blocksStr[1]) - 1;
+            try {
+                block0Index = std::stoull(blocksStr[0]);
+                block1Index = std::stoull(blocksStr[1]);
+            } catch (const std::invalid_argument&) {
+                std::cerr << "Error: Invalid block index in wirestring (non-numeric value)" << std::endl;
+                return false;
+            }
+
+            if (block0Index == 0 || block1Index == 0) {
+                std::cerr << "Error: Block index cannot be 0 (indices are 1-based)" << std::endl;
+                return false;
+            }
+
+            block0Index--;
+            block1Index--;
+
+            uint64_t blockCount = module.getBlockCount();
+            if (block0Index >= blockCount || block1Index >= blockCount) {
+                std::cerr << "Error: Block index out of range" << std::endl;
+                return false;
+            }
+
             Block *block0 = module.getBlock(block0Index);
             Block *block1 = module.getBlock(block1Index);
+
+            if (!block0 || !block1) {
+                std::cerr << "Error: Null block reference encountered" << std::endl;
+                return false;
+            }
+
+            bool connectionExists = false;
+            for (const auto* output : block0->getOutputs()) {
+                if (output == block1) {
+                    connectionExists = true;
+                    break;
+                }
+            }
+
+            if (connectionExists) {
+                std::cerr << "Warning: Duplicate connection between blocks " 
+                        << block0Index + 1 << " and " << block1Index + 1 
+                        << " - skipping" << std::endl;
+                continue;
+            }
+
             module.connectBlocks(block0, block1);
         }
     }
