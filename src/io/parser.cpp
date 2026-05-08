@@ -60,7 +60,7 @@ bool loadModule(Module &module, std::string filepath)
             auto blocksStr = split(wirestring, ',');
             if (blocksStr.size() != 2)
             {
-                std::cerr << "ERROR: trying to parse a malformed wirestring" << std::endl;
+                std::cerr << "ERROR: trying to parse a malformed wirestring." << std::endl;
                 return false;
             }
             
@@ -70,12 +70,12 @@ bool loadModule(Module &module, std::string filepath)
                 block0Index = std::stoull(blocksStr[0]);
                 block1Index = std::stoull(blocksStr[1]);
             } catch (const std::invalid_argument&) {
-                std::cerr << "ERROR: Invalid block index in wirestring (non-numeric value)" << std::endl;
+                std::cerr << "ERROR: Invalid block index in wirestring (non-numeric value)." << std::endl;
                 return false;
             }
 
             if (block0Index == 0 || block1Index == 0) {
-                std::cerr << "ERROR: Block index cannot be 0 (indices are 1-based)" << std::endl;
+                std::cerr << "ERROR: Block index cannot be 0 (indices are 1-based)." << std::endl;
                 return false;
             }
 
@@ -84,7 +84,7 @@ bool loadModule(Module &module, std::string filepath)
 
             uint64_t blockCount = module.getBlockCount();
             if (block0Index >= blockCount || block1Index >= blockCount) {
-                std::cerr << "ERROR: Block index out of range" << std::endl;
+                std::cerr << "ERROR: Block index out of range." << std::endl;
                 return false;
             }
 
@@ -92,7 +92,7 @@ bool loadModule(Module &module, std::string filepath)
             Block *block1 = module.getBlock(block1Index);
 
             if (!block0 || !block1) {
-                std::cerr << "ERROR: Null block reference encountered" << std::endl;
+                std::cerr << "ERROR: Null block reference encountered." << std::endl;
                 return false;
             }
 
@@ -107,7 +107,7 @@ bool loadModule(Module &module, std::string filepath)
             if (connectionExists) {
                 std::cerr << "WARNING: Duplicate connection between blocks " 
                         << block0Index + 1 << " and " << block1Index + 1 
-                        << " - skipping" << std::endl;
+                        << " - skipping." << std::endl;
                 continue;
             }
 
@@ -122,14 +122,14 @@ Block *parseBlockstring(std::string blockstring)
 {
     if (blockstring.empty())
     {
-        std::cerr << "ERROR: Trying to parse a malformed blockstring" << std::endl;
+        std::cerr << "ERROR: Trying to parse a malformed blockstring." << std::endl;
         return nullptr;
     }
 
     std::vector<std::string> blockParams = split(blockstring, ',');
     if (blockParams.size() != 6)
     {
-        std::cerr << "ERROR: Trying to parse a malformed blockstring" << std::endl;
+        std::cerr << "ERROR: Trying to parse a malformed blockstring." << std::endl;
         return nullptr;
     }
 
