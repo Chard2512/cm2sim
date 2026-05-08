@@ -26,9 +26,9 @@ sf::RectangleShape Renderer::getBlockRectangle(Block* block) {
 
     sf::Color baseColor = getBlockColor(block);
     sf::Color outlineColor = sf::Color(
-        static_cast<uint8_t>(baseColor.r * 0.2f),
-        static_cast<uint8_t>(baseColor.g * 0.2f),
-        static_cast<uint8_t>(baseColor.b * 0.2f),
+        baseColor.r * 0.2f,
+        baseColor.g * 0.2f,
+        baseColor.b * 0.2f,
         baseColor.a
     );
 
@@ -39,9 +39,9 @@ sf::RectangleShape Renderer::getBlockRectangle(Block* block) {
         blockRectangle.setFillColor(baseColor);
     } else {
         sf::Color darkColor = sf::Color(
-            static_cast<uint8_t>(baseColor.r * 0.3f),
-            static_cast<uint8_t>(baseColor.g * 0.3f),
-            static_cast<uint8_t>(baseColor.b * 0.3f),
+            baseColor.r * 0.3f,
+            baseColor.g * 0.3f,
+            baseColor.b * 0.3f,
             baseColor.a
         );
         blockRectangle.setFillColor(darkColor);
