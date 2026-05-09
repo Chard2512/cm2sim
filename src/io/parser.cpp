@@ -184,7 +184,7 @@ Block *parseBlockstring(std::string blockstring)
 
     sf::Vector2f pos(posX, posY);
 
-    std::vector<int> properties;
+    std::vector<float> properties;
     if (!blockParams[5].empty())
     {
         auto propertyStrings = split(blockParams[5], '+');
@@ -193,7 +193,7 @@ Block *parseBlockstring(std::string blockstring)
         {
             try {
 
-                int property = std::stoi(propertyStrings[i]);
+                float property = std::stof(propertyStrings[i]);
                 properties.push_back(property);
 
             } catch (const std::invalid_argument&) {
