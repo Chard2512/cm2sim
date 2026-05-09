@@ -24,7 +24,8 @@ void Module::update() {
     std::vector<bool> nextState = {};
     nextState.reserve(blocks.size());
     for (size_t i = 0; i < blocks.size(); i++) {
-        nextState.push_back(blocks[i]->update());
+        nextState.push_back(blocks[i]->update() ^ blocks[i]->interacted);
+        blocks[i]->interacted = false;
     }
     for (size_t i = 0; i < blocks.size(); i++) {
         blocks[i]->setState(nextState[i]);

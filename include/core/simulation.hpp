@@ -9,6 +9,7 @@
 #include "core/module.hpp"
 #include "render/renderer.hpp"
 #include "user/camera.hpp"
+#include "user/interaction.hpp"
 #define WINDOW_NAME "SFCM2"
 
 struct SimConfig {
@@ -20,6 +21,7 @@ struct SimConfig {
 class Simulation {
 private:
     friend class CameraService;
+    friend class InteractionService;
 
     sf::RenderWindow window;
     sf::View view;
@@ -28,6 +30,7 @@ private:
     SimConfig config;
 
     CameraService cameraService;
+    InteractionService interactionService;
 
     void handleEvents();
     void updateView();

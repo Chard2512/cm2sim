@@ -1,5 +1,12 @@
 #include "core/block.hpp"
 
+sf::FloatRect Block::getRect() {
+    return sf::FloatRect(
+        this->position,
+        sf::Vector2f(1, 1)
+    );
+}
+
 bool NOR::update() {
     for (Block* input : inputs) {
         if (input->getState() == true) {

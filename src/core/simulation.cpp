@@ -8,7 +8,8 @@
 
 Simulation::Simulation(SimConfig cfg)
     :   config(cfg),
-        cameraService(this)
+        cameraService(this),
+        interactionService(this)
 {}
 
 Simulation::~Simulation() {
@@ -28,6 +29,7 @@ void Simulation::handleEvents() {
         }
 
         cameraService.handleEvent(event);
+        interactionService.handleEvent(event);
     }
 }
 

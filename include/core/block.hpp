@@ -26,8 +26,12 @@ sf::Color getBlockColor(BlockID blockID);
 
 class Block {
 protected:
+
+    friend class Module;
+
     sf::Vector2f position = sf::Vector2f(0, 0);
     bool state = false;
+    bool interacted = false;
     std::vector<Block*> inputs = {};
     std::vector<Block*> outputs = {};
     
@@ -47,6 +51,8 @@ public:
     void addOutput(Block* output) {
         outputs.push_back(output);
     }
+    sf::FloatRect getRect();
+    void interact() { interacted = true; }
     virtual bool update() {
         return false;
     }

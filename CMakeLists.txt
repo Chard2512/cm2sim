@@ -38,6 +38,7 @@ set(SOURCES
     src/io/strutils.cpp
     src/render/renderer.cpp
     src/user/camera.cpp
+    src/user/interaction.cpp
 )
 
 # ============================================================================
