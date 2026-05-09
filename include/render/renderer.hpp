@@ -1,6 +1,7 @@
 #ifndef _CM2_RENDERER_HPP_
 #define _CM2_RENDERER_HPP_
 
+#include <unordered_map>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "core/module.hpp"
 
