@@ -35,3 +35,16 @@ To drag camera around, press and hold mouse right button.
 To zoom in and out, scroll mouse wheel.
 
 To interact with a block, position your cursor in the block you want to interact and press mouse left button.
+
+## Contributing
+
+Anyone can contribute for this project, even if you're not a skilled programmer.
+
+However, since this is an early development, I strongly recommend you contact with me first for guidance (on Discord `chard2512`).
+
+Some ideas that you could try to help:
+
+- Test the program in your unique setup.
+- Test the program options through it's limits (e.g. setting too high or too low values, weird strings etc).
+- Test run all sorts of blocks, savestrings etc.
+- Adding your own features.
