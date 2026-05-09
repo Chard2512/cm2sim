@@ -1,7 +1,6 @@
 #ifndef _CM2_BLOCK_HPP_
 #define _CM2_BLOCK_HPP_
 
-#include <memory>
 #include <vector>
 #include <tuple>
 #include <string>
@@ -9,7 +8,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
-#include <unordered_map>
+#include "core/random.hpp"
 
 enum class BlockID {
     NOR = 0,
@@ -20,6 +19,7 @@ enum class BlockID {
     LED = 6,
     NAND = 10,
     XNOR = 11,
+    RANDOM = 12,
     NODE = 15,
     DELAY = 16
 };
@@ -91,22 +91,6 @@ public:
     std::string getIDName() const override { return "XOR"; }
 };
 
-class NAND : public Block {
-
-public:
-    void update() override;
-    BlockID getID() const override { return BlockID::NAND; }
-    std::string getIDName() const override { return "NAND"; }
-};
-
-class XNOR : public Block {
-
-public:
-    void update() override;
-    BlockID getID() const override { return BlockID::XNOR; }
-    std::string getIDName() const override { return "XNOR"; }
-};
-
 class FLIPFLOP : public Block {
 private:
     bool lastEnableState = false;
@@ -123,6 +107,34 @@ public:
     void update() override;
     BlockID getID() const override { return BlockID::LED; }
     std::string getIDName() const override { return "LED"; }
+};
+
+class NAND : public Block {
+
+public:
+    void update() override;
+    BlockID getID() const override { return BlockID::NAND; }
+    std::string getIDName() const override { return "NAND"; }
+};
+
+class XNOR : public Block {
+
+public:
+    void update() override;
+    BlockID getID() const override { return BlockID::XNOR; }
+    std::string getIDName() const override { return "XNOR"; }
+};
+
+class RANDOM : public Block {
+private:
+    friend class BlockFactory;
+
+    float probability;
+
+public:
+    void update() override;
+    BlockID getID() const override { return BlockID::RANDOM; }
+    std::string getIDName() const override { return "RANDOM"; }
 };
 
 class DELAY : public Block {
@@ -157,7 +169,7 @@ public:
         BlockID id, 
         bool state, 
         sf::Vector2f pos,
-        std::vector<int> properties
+        std::vector<float> properties
     );
 };
 

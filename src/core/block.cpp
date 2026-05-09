@@ -43,31 +43,8 @@ void OR::update() {
     interacted = false;
 }
 
-void NAND::update() {
-    for (Block* input : inputs) {
-        if (input->getState() == false) {
-            nextState = true ^ interacted;
-            interacted = false; 
-            return;
-        }
-    }
-    nextState = false ^ interacted;
-    interacted = false;
-}
-
 void XOR::update() {
     bool tmp = false;
-    for (Block* input : inputs) {
-        if (input->getState() == true) {
-            tmp = !tmp;
-        }
-    }
-    nextState = tmp ^ interacted;
-    interacted = false;
-}
-
-void XNOR::update() {
-    bool tmp = true;
     for (Block* input : inputs) {
         if (input->getState() == true) {
             tmp = !tmp;
@@ -102,6 +79,34 @@ void LED::update() {
         }
     }
     nextState = false ^ interacted;
+    interacted = false;
+}
+
+void NAND::update() {
+    for (Block* input : inputs) {
+        if (input->getState() == false) {
+            nextState = true ^ interacted;
+            interacted = false; 
+            return;
+        }
+    }
+    nextState = false ^ interacted;
+    interacted = false;
+}
+
+void XNOR::update() {
+    bool tmp = true;
+    for (Block* input : inputs) {
+        if (input->getState() == true) {
+            tmp = !tmp;
+        }
+    }
+    nextState = tmp ^ interacted;
+    interacted = false;
+}
+
+void RANDOM::update() {
+    nextState = Random::get().next<bool>(probability) ^ interacted;
     interacted = false;
 }
 
@@ -182,7 +187,7 @@ Block* BlockFactory::createBlock(
         BlockID id, 
         bool state, 
         sf::Vector2f pos,
-        std::vector<int> properties
+        std::vector<float> properties
     ) 
 {
     Block* newBlock = nullptr;
@@ -216,6 +221,20 @@ Block* BlockFactory::createBlock(
         case BlockID::XNOR:
         {
             newBlock = new XNOR();
+            break;
+        }
+        case BlockID::RANDOM:
+        {
+            float probability;
+            if (properties.size() == 0) {
+                probability = 0.5f;
+            } else {
+                probability = std::min(std::max(static_cast<float>(properties[0]), 0.f), 1.f);
+            }
+
+            newBlock = new RANDOM();
+            RANDOM* randomBlock = dynamic_cast<RANDOM*>(newBlock);
+            randomBlock->probability = probability;
             break;
         }
         case BlockID::FLIPFLOP:
