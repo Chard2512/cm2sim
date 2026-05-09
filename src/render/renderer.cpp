@@ -65,7 +65,7 @@ sf::RectangleShape Renderer::getConnectionRectangle(Block* block0, Block* block1
     sf::Color lineBaseColor = getBlockColor(block0);
     lineBaseColor.a = 127;
 
-    sf::RectangleShape line(sf::Vector2f(length, 0.5f));
+    sf::RectangleShape line(sf::Vector2f(length, 0.2f));
     if (block0->getState()) {
         line.setFillColor(lineBaseColor);
     } else {
@@ -78,7 +78,7 @@ sf::RectangleShape Renderer::getConnectionRectangle(Block* block0, Block* block1
         line.setFillColor(darkerLineColor);
     }
 
-    line.setOrigin(sf::Vector2f(0, 0.25f));
+    line.setOrigin(sf::Vector2f(0, 0.1f));
     line.setPosition(block0->getPosition());
     line.move(sf::Vector2f(0.5, 0.5)); // The block Rectangle might have different size, fix this later
 
@@ -95,7 +95,7 @@ sf::RectangleShape Renderer::getConnectionRectangle(Block* block0, Block* block1
 
 void Renderer::renderConnection(sf::RenderWindow* window, Block* block0, Block* block1) {
     sf::RectangleShape connectionRectangle = getConnectionRectangle(block0, block1);
-    window->draw(connectionRectangle, sf::BlendAdd);
+    window->draw(connectionRectangle, sf::BlendMax);
 }
 
 void Renderer::render(sf::RenderWindow* window, Module* module) {
