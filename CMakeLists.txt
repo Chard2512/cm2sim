@@ -34,6 +34,7 @@ set(SOURCES
     src/core/block.cpp
     src/core/module.cpp
     src/core/simulation.cpp
+    src/core/random.cpp
     src/io/parser.cpp
     src/io/strutils.cpp
     src/render/renderer.cpp
