@@ -93,6 +93,18 @@ void FLIPFLOP::update() {
     interacted = false;
 }
 
+void LED::update() {
+    for (Block* input : inputs) {
+        if (input->getState() == true) {
+            nextState = true ^ interacted;
+            interacted = false;
+            return;
+        }
+    }
+    nextState = false ^ interacted;
+    interacted = false;
+}
+
 void DELAY::update() {
     bool enable = false;
     for (Block* input : inputs) {
@@ -209,6 +221,11 @@ Block* BlockFactory::createBlock(
         case BlockID::FLIPFLOP:
         {
             newBlock = new FLIPFLOP();
+            break;
+        }
+        case BlockID::LED:
+        {
+            newBlock = new LED();
             break;
         }
         case BlockID::NODE:

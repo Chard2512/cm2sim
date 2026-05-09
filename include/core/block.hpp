@@ -17,6 +17,7 @@ enum class BlockID {
     OR = 2,
     XOR = 3,
     FLIPFLOP = 5,
+    LED = 6,
     NAND = 10,
     XNOR = 11,
     NODE = 15,
@@ -114,6 +115,14 @@ public:
     void update() override;
     BlockID getID() const override { return BlockID::FLIPFLOP; }
     std::string getIDName() const override { return "FLIPFLOP"; }
+};
+
+class LED : public Block {
+
+public:
+    void update() override;
+    BlockID getID() const override { return BlockID::LED; }
+    std::string getIDName() const override { return "LED"; }
 };
 
 class DELAY : public Block {
