@@ -61,16 +61,10 @@ endif()
 # ============================================================================
 # Packages
 # ============================================================================
-include(FetchContent)
-FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 3.1.0
-    GIT_SHALLOW ON
-    EXCLUDE_FROM_ALL
-    SYSTEM)
-FetchContent_MakeAvailable(SFML)
+find_package(SFML 3 COMPONENTS Graphics Window System REQUIRED)
+message(STATUS "Using system SFML: ${SFML_VERSION_STRING}")
 
-target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics)
+target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Window SFML::System)
 
 # ============================================================================
 # Testing
