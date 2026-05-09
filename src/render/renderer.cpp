@@ -8,6 +8,7 @@ sf::Color Renderer::getBlockIDColor(BlockID blockID) {
         {BlockID::XOR,      sf::Color(168, 0, 255, 255)},
         {BlockID::NAND,     sf::Color(0, 42, 89, 255)},
         {BlockID::XNOR,     sf::Color(213, 0, 103, 255)},
+        {BlockID::RANDOM,   sf::Color(84, 54, 35, 255)},
         {BlockID::LED,      sf::Color(255, 255, 255, 255)},
         {BlockID::FLIPFLOP, sf::Color(30, 30, 30, 255)},
         {BlockID::NODE,     sf::Color(165, 177, 200, 255)},
