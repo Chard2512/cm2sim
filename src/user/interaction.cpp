@@ -15,9 +15,6 @@ void InteractionService::blockInteract(const std::optional<sf::Event> event) {
             const auto clickPixel = sf::Mouse::getPosition(simulation->window);
             const auto clickCoords = simulation->window.mapPixelToCoords(clickPixel);
 
-            std::cout << "Pixel: X: " << clickPixel.x << " Y: " << clickPixel.y << std::endl;
-            std::cout << "Coords: X: " << clickCoords.x << " Y: " << clickCoords.y << std::endl;
-
             for (auto block : simulation->mainModule->getBlocks()) {
                 if (block->getRect().contains(clickCoords)) {
                     block->interact();
