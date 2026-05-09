@@ -2,6 +2,8 @@
 #define _CM2_MODULE_HPP_
 
 #include <memory>
+#include <tuple>
+#include <algorithm>
 #include "core/block.hpp"
 
 class Module {
@@ -15,7 +17,7 @@ public:
     std::vector<Block*> getBlocks() const;
     Block* getBlock(uint64_t index) const;
     uint64_t getBlockCount() const;
-    void addBlock(Block* block) { blocks.push_back(block); };
+    void addBlock(Block* block) { blocks.push_back(block); }
     void connectBlocks(Block* block0, Block* block1) { 
         block0->addOutput(block1);
         block1->addInput(block0);

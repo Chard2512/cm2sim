@@ -7,63 +7,77 @@ sf::FloatRect Block::getRect() {
     );
 }
 
-bool NOR::update() {
+void NOR::update() {
     for (Block* input : inputs) {
         if (input->getState() == true) {
-            return false;
+            nextState = false ^ interacted;
+            interacted = false;
+            return;
         }
     }
-    return true;
+    nextState = true ^ interacted;
+    interacted = false;
 }
 
-bool AND::update() {
+void AND::update() {
     for (Block* input : inputs) {
         if (input->getState() == false) {
-            return false;
+            nextState = false ^ interacted;
+            interacted = false;
+            return;
         }
     }
-    return true;
+    nextState = true ^ interacted;
+    interacted = false;
 }
 
-bool OR::update() {
+void OR::update() {
     for (Block* input : inputs) {
         if (input->getState() == true) {
-            return true;
+            nextState = true ^ interacted;
+            interacted = false;
+            return;
         }
     }
-    return false;
+    nextState = false ^ interacted;
+    interacted = false;
 }
 
-bool NAND::update() {
+void NAND::update() {
     for (Block* input : inputs) {
         if (input->getState() == false) {
-            return true;
+            nextState = true ^ interacted;
+            interacted = false; 
+            return;
         }
     }
-    return false;
+    nextState = false ^ interacted;
+    interacted = false;
 }
 
-bool XOR::update() {
+void XOR::update() {
     bool tmp = false;
     for (Block* input : inputs) {
         if (input->getState() == true) {
             tmp = !tmp;
         }
     }
-    return tmp;
+    nextState = tmp ^ interacted;
+    interacted = false;
 }
 
-bool XNOR::update() {
+void XNOR::update() {
     bool tmp = true;
     for (Block* input : inputs) {
         if (input->getState() == true) {
             tmp = !tmp;
         }
     }
-    return tmp;
+    nextState = tmp ^ interacted;
+    interacted = false;
 }
 
-bool FLIPFLOP::update() {
+void FLIPFLOP::update() {
     bool enable = false;
     for (Block* input : inputs) {
         if (input->getState() == true) {
@@ -75,10 +89,11 @@ bool FLIPFLOP::update() {
     enable &= !lastEnableState;
     lastEnableState = tmp;
 
-    return state ^ enable;
+    nextState = state ^ enable ^ interacted;
+    interacted = false;
 }
 
-bool DELAY::update() {
+void DELAY::update() {
     bool enable = false;
     for (Block* input : inputs) {
         if (input->getState() == true) {
@@ -101,7 +116,54 @@ bool DELAY::update() {
         }
     }
 
-    return consumed;
+    nextState = consumed ^ interacted;
+    interacted = false;
+}
+
+void NODE::update() {
+    for (Block* input : inputs) {
+        if (input->getState() == true) {
+            nextState = true;
+            return;
+        }
+    }
+    nextState = false || interacted;
+}
+
+uint64_t NODE::getLevel() {
+    if (cachedLevel.has_value()) {
+        return cachedLevel.value();
+    }
+
+    // Prevent infinite recursion on circular dependencies
+    if (visiting) {
+        return 0;
+    }
+
+    visiting = true;
+
+    std::vector<Block*> nodes;
+    for (auto input : inputs) {
+        if (input->getID() == BlockID::NODE) {
+            nodes.push_back(input);
+        }
+    }
+
+    if (nodes.size() == 0) {
+        cachedLevel = 0;
+        visiting = false;
+        return 0; 
+    }
+
+    uint64_t maxLevel = 0;
+    for (auto block : nodes) {
+        auto node = dynamic_cast<NODE*>(block);
+        maxLevel = std::max(maxLevel, node->getLevel());
+    }
+
+    cachedLevel = maxLevel + 1;
+    visiting = false;
+    return maxLevel + 1;
 }
 
 Block* BlockFactory::createBlock(
@@ -149,6 +211,11 @@ Block* BlockFactory::createBlock(
             newBlock = new FLIPFLOP();
             break;
         }
+        case BlockID::NODE:
+        {
+            newBlock = new NODE();
+            break;
+        }
         case BlockID::DELAY:
         {
             uint32_t delay;
@@ -165,7 +232,7 @@ Block* BlockFactory::createBlock(
 
             newBlock = new DELAY();
             DELAY* delayBlock = dynamic_cast<DELAY*>(newBlock);
-            delayBlock->setDelay(delay);
+            delayBlock->delay = delay;
             break;
         }
         default:
@@ -175,7 +242,7 @@ Block* BlockFactory::createBlock(
         }
     }
     
-    newBlock->setPosition(pos);
-    newBlock->setState(state);
+    newBlock->position = pos;
+    newBlock->state = state;
     return newBlock;
 }

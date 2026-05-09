@@ -19,43 +19,42 @@ enum class BlockID {
     FLIPFLOP = 5,
     NAND = 10,
     XNOR = 11,
+    NODE = 15,
     DELAY = 16
 };
 
-sf::Color getBlockColor(BlockID blockID);
-
 class Block {
 protected:
-
     friend class Module;
+    friend class BlockFactory;
 
     sf::Vector2f position = sf::Vector2f(0, 0);
-    bool state = false;
+    bool state, nextState = false;
     bool interacted = false;
     std::vector<Block*> inputs = {};
     std::vector<Block*> outputs = {};
     
+    void step() { state = nextState; }
+    void addInput(Block* input) {
+        inputs.push_back(input);
+    }
+    void addOutput(Block* output) {
+        outputs.push_back(output);
+    }
+    virtual void update() {
+        return;
+    }
+
 public:
     Block() = default;
     virtual ~Block() = default;
 
     sf::Vector2f getPosition() const { return position; }
-    void setPosition(sf::Vector2f newPosition) { position = newPosition; }
     bool getState() const { return state; }
-    void setState(bool newState) { state = newState; }
     const std::vector<Block*>& getInputs() const { return inputs; }
-    void addInput(Block* input) {
-        inputs.push_back(input);
-    }
     const std::vector<Block*>& getOutputs() const { return outputs; }
-    void addOutput(Block* output) {
-        outputs.push_back(output);
-    }
     sf::FloatRect getRect();
     void interact() { interacted = true; }
-    virtual bool update() {
-        return false;
-    }
     virtual BlockID getID() const = 0;
     virtual std::string getIDName() const = 0;
 };
@@ -63,14 +62,14 @@ public:
 class NOR : public Block {
 
 public:
-    bool update() override;
+    void update() override;
     BlockID getID() const override { return BlockID::NOR; }
     std::string getIDName() const override { return "NOR"; }
 };
 
 class AND : public Block {
 public:
-    bool update() override;
+    void update() override;
     BlockID getID() const override { return BlockID::AND; }
     std::string getIDName() const override { return "AND"; }
 };
@@ -78,7 +77,7 @@ public:
 class OR : public Block {
 
 public:
-    bool update() override;
+    void update() override;
     BlockID getID() const override { return BlockID::OR; }
     std::string getIDName() const override { return "OR"; }
 };
@@ -86,7 +85,7 @@ public:
 class XOR : public Block {
 
 public:
-    bool update() override;
+    void update() override;
     BlockID getID() const override { return BlockID::XOR; }
     std::string getIDName() const override { return "XOR"; }
 };
@@ -94,7 +93,7 @@ public:
 class NAND : public Block {
 
 public:
-    bool update() override;
+    void update() override;
     BlockID getID() const override { return BlockID::NAND; }
     std::string getIDName() const override { return "NAND"; }
 };
@@ -102,7 +101,7 @@ public:
 class XNOR : public Block {
 
 public:
-    bool update() override;
+    void update() override;
     BlockID getID() const override { return BlockID::XNOR; }
     std::string getIDName() const override { return "XNOR"; }
 };
@@ -112,21 +111,35 @@ private:
     bool lastEnableState = false;
 
 public:
-    bool update() override;
+    void update() override;
     BlockID getID() const override { return BlockID::FLIPFLOP; }
     std::string getIDName() const override { return "FLIPFLOP"; }
 };
 
 class DELAY : public Block {
 private:
+    friend class BlockFactory;
+
     uint32_t delay;
     std::vector<uint32_t> queue;
 
 public:
-    bool update() override;
-    void setDelay(uint32_t newDelay) { delay = newDelay; }
+    void update() override;
+
     BlockID getID() const override { return BlockID::DELAY; }
     std::string getIDName() const override { return "DELAY"; }
+};
+
+class NODE : public Block {
+private:
+    std::optional<uint64_t> cachedLevel;
+    bool visiting = false;
+
+public:
+    void update() override;
+    BlockID getID() const override { return BlockID::NODE; }
+    std::string getIDName() const override { return "NODE"; }
+    uint64_t getLevel();
 };
 
 class BlockFactory {
