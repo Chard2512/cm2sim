@@ -1,9 +1,6 @@
 #ifndef _CM2_SIMULATION_HPP_
 #define _CM2_SIMULATION_HPP_
 
-#include <thread>
-#include <atomic>
-#include <mutex>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
 #include "core/module.hpp"

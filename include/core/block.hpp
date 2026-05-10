@@ -2,13 +2,10 @@
 #define _CM2_BLOCK_HPP_
 
 #include <vector>
-#include <tuple>
 #include <string>
-#include <iostream>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
-#include "core/random.hpp"
 
 enum class BlockID {
     NOR = 0,

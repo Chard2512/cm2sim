@@ -1,6 +1,5 @@
 #ifndef _CM2_RANDOM_HPP_
 #define _CM2_RANDOM_HPP_
-
 #include <random>
 #include <type_traits>
 

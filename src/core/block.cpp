@@ -1,4 +1,7 @@
+#include <iostream>
+#include <tuple>
 #include "core/block.hpp"
+#include "core/random.hpp"
 
 sf::FloatRect Block::getRect() {
     return sf::FloatRect(

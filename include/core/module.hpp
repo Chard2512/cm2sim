@@ -1,9 +1,6 @@
 #ifndef _CM2_MODULE_HPP_
 #define _CM2_MODULE_HPP_
 
-#include <memory>
-#include <tuple>
-#include <algorithm>
 #include "core/block.hpp"
 
 class Module {

@@ -1,5 +1,3 @@
-#include <thread>
-#include <mutex>
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>

@@ -1,3 +1,6 @@
+#include <memory>
+#include <tuple>
+#include <algorithm>
 #include "core/module.hpp"
 
 Module::Module() {}

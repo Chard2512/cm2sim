@@ -1,3 +1,4 @@
+#include <unordered_map>
 #include "render/renderer.hpp"
 
 sf::Color Renderer::getBlockIDColor(BlockID blockID) {
