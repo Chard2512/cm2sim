@@ -54,6 +54,11 @@ void XOR::update() {
     interacted = false;
 }
 
+void BUTTON::update() {
+    nextState = interacted;
+    interacted = false;
+}
+
 void FLIPFLOP::update() {
     bool enable = false;
     for (Block* input : inputs) {
@@ -211,6 +216,11 @@ Block* BlockFactory::createBlock(
         case BlockID::XOR:
         {
             newBlock = new XOR();
+            break;
+        }
+        case BlockID::BUTTON:
+        {
+            newBlock = new BUTTON();
             break;
         }
         case BlockID::NAND:

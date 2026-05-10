@@ -15,6 +15,7 @@ enum class BlockID {
     AND = 1,
     OR = 2,
     XOR = 3,
+    BUTTON = 4,
     FLIPFLOP = 5,
     LED = 6,
     NAND = 10,
@@ -89,6 +90,14 @@ public:
     void update() override;
     BlockID getID() const override { return BlockID::XOR; }
     std::string getIDName() const override { return "XOR"; }
+};
+
+class BUTTON : public Block {
+
+public:
+    void update() override;
+    BlockID getID() const override { return BlockID::BUTTON; }
+    std::string getIDName() const override { return "BUTTON"; }
 };
 
 class FLIPFLOP : public Block {

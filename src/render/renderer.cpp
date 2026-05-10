@@ -6,6 +6,7 @@ sf::Color Renderer::getBlockIDColor(BlockID blockID) {
         {BlockID::AND,      sf::Color(0, 121, 255, 255)},
         {BlockID::OR,       sf::Color(0, 241, 29, 255)},
         {BlockID::XOR,      sf::Color(168, 0, 255, 255)},
+        {BlockID::BUTTON,   sf::Color(255, 127, 0, 255)},
         {BlockID::NAND,     sf::Color(0, 42, 89, 255)},
         {BlockID::XNOR,     sf::Color(213, 0, 103, 255)},
         {BlockID::RANDOM,   sf::Color(84, 54, 35, 255)},
