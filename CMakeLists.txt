@@ -40,6 +40,7 @@ set(SOURCES
     src/render/renderer.cpp
     src/user/camera.cpp
     src/user/interaction.cpp
+    src/user/coding.cpp
 )
 
 # ============================================================================
