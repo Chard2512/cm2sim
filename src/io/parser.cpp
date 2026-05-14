@@ -1,4 +1,5 @@
 #include <iostream>
+#include <filesystem>
 #include <fstream>
 #include <string>
 #include <iomanip>
@@ -6,6 +7,8 @@
 #include "io/strutils.hpp"
 #define PROJECT_NAME "sfcm2"
 #define VERSION "0.1"
+
+namespace fs = std::filesystem;
 
 void usage(const std::string &progName)
 {
@@ -18,6 +21,8 @@ void usage(const std::string &progName)
               << "Set simulation framerate (default: 60).\n"
               << std::setw(30) << "  -h, --help"
               << "Prints this help message.\n"
+              << std::setw(30) << "  -i, --interactive"
+              << "Enables auto module update based on file update.\n"
               << std::setw(30) << "  -t, --tickrate=RATE"
               << "Set simulation tickrate (default: 20).\n"
               << std::setw(30) << "  --version"
@@ -30,6 +35,12 @@ bool loadModule(Module &module, std::string filepath)
     if (!file.is_open())
     {
         std::cerr << "Could not open file \"" << filepath << "\"." << std::endl;
+        return false;
+    }
+
+    if (fs::is_empty(filepath))
+    {
+        std::cerr << "File is empty" << std::endl;
         return false;
     }
 
@@ -242,6 +253,10 @@ ArgParseStatus parseArgs(Args &args, int argc, char *argv[])
                     usage(progName);
                     return ArgParseStatus::ExitSuccess;
                 }
+                else if (op == "interactive")
+                {
+                    args.simConfig.interactive = true;
+                }
                 else if (op == "version")
                 {
                     std::cout << PROJECT_NAME << " " << VERSION << std::endl;
@@ -272,8 +287,12 @@ ArgParseStatus parseArgs(Args &args, int argc, char *argv[])
                         {
                             usage(progName);
                             return ArgParseStatus::ExitSuccess;
-                        }
-                        else if (ops[j] == 'p')
+                        } else
+                        if (ops[j] == 'i')
+                        {
+                            args.simConfig.interactive = true;
+                        } else
+                        if (ops[j] == 'p')
                         {
                             if (i + 1 >= argc)
                             {
@@ -317,6 +336,7 @@ ArgParseStatus parseArgs(Args &args, int argc, char *argv[])
             if (args.moduleFilePath.empty())
             {
                 args.moduleFilePath = arg;
+                args.simConfig.moduleFilePath = fs::path(arg);
             }
         }
     }
