@@ -27,12 +27,13 @@ int main(int argc, char* argv[]) {
             return 1;
         }
 
-        Module module;
-        if (!loadModule(module, filePath)) {
+        Module* module = new Module();
+        if (!loadModule(*module, filePath)) {
+            delete module;
             return 1;
         }
         Simulation sim(args.simConfig);
-        sim.run(&module);
+        sim.run(module);
         return 0;
     } else {
         std::cerr << "Which file do you want me to run? :<" << std::endl;
