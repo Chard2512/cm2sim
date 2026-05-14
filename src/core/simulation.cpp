@@ -7,11 +7,12 @@
 Simulation::Simulation(SimConfig cfg)
     :   config(cfg),
         cameraService(this),
-        interactionService(this)
+        interactionService(this),
+        codingService(this) 
 {}
 
 Simulation::~Simulation() {
-    mainModule = nullptr;
+    delete mainModule;
 }
 
 void Simulation::handleEvents() {
@@ -27,7 +28,11 @@ void Simulation::handleEvents() {
         }
 
         cameraService.handleEvent(event);
-        interactionService.handleEvent(event);
+        interactionService.handleEvent(event);    
+    }
+
+    if (config.interactive) {
+        codingService.handleEvent();
     }
 }
 
@@ -50,16 +55,16 @@ void Simulation::run(Module* module) {
     window.setView(view);
 
     while (window.isOpen()) {
-        sf::Time elapsedTime = clock.restart();
-        timeSinceLastUpdate += elapsedTime;
-        timeSinceLastRender += elapsedTime;
+        deltaTime = clock.restart();
+        timeSinceLastUpdate += deltaTime;
+        timeSinceLastRender += deltaTime;
 
         handleEvents();
 
         while (timeSinceLastUpdate >= TIME_PER_UPDATE) {
             timeSinceLastUpdate -= TIME_PER_UPDATE;
 
-            module->update();
+            mainModule->update();
         }  
 
         if (timeSinceLastRender >= TIME_PER_RENDER) {
